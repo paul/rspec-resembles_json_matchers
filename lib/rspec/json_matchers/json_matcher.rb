@@ -1,6 +1,8 @@
 require "active_support/core_ext/string/indent" # indent
 require "active_support/core_ext/hash/keys"     # stringify_keys
 
+require "json"
+
 module RSpec::JsonMatchers
   class JsonMatcher
     include RSpec::Matchers::Composable
