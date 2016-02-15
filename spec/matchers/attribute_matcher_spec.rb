@@ -75,4 +75,48 @@ RSpec.describe RSpec::JsonMatchers::AttributeMatcher do
       specify { expect(matcher.matches?(example_hash)).to be_falsy }
     end
   end
+
+  describe "#description" do
+    context "with just a key provided" do
+      let(:matcher) { described_class.new(key) }
+      subject(:description) { matcher.description }
+      let(:key) { :true }
+
+      specify { expect(description).to eq "have attribute :true be present" }
+    end
+
+    context "with key and value matcher provided" do
+      let(:matcher) { described_class.new(key, value_matcher) }
+      subject(:description) { matcher.description }
+      let(:key) { :true }
+      let(:value_matcher) { be_true }
+
+      specify { expect(description).to start_with "have attribute :true" }
+      specify { expect(description).to end_with value_matcher.description }
+    end
+  end
+
+  describe "#failure_message" do
+    context "when just a key was provided" do
+      let(:matcher) { described_class.new(key) }
+      subject(:failure_message) { matcher.failure_message }
+      let(:key) { :does_not_exist }
+
+      before { matcher.matches? example_hash }
+
+      specify { expect(failure_message).to eq "Expected attribute :does_not_exist to be present" }
+    end
+
+    context "when a key and value matcher were provided" do
+      let(:matcher) { described_class.new(key, value_matcher) }
+      subject(:failure_message) { matcher.failure_message }
+      let(:key) { :does_not_exist }
+      let(:value_matcher) { be_true }
+
+      before { matcher.matches? example_hash }
+
+      specify { expect(failure_message).to start_with "Expected value of attribute :does_not_exist" }
+      specify { expect(failure_message).to end_with value_matcher.description }
+    end
+  end
 end

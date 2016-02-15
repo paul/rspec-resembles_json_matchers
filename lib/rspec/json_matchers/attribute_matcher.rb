@@ -23,10 +23,16 @@ module RSpec::JsonMatchers
     end
 
     def failure_message
-      msgs = ["Expected",
-              document.fetch(attribute_name, nil).inspect,
-              "to",
-              expected.description]
+      if expected === NullMatcher
+        msgs = ["Expected attribute",
+                attribute_name.inspect,
+                "to be present"]
+      else
+        msgs = ["Expected value of attribute",
+                attribute_name.inspect,
+                "to",
+                expected.description]
+      end
       sentencize(*msgs)
     end
 
