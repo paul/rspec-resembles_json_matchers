@@ -1,3 +1,5 @@
+require "active_support/core_ext/hash/indifferent_access"
+
 module RSpec::JsonMatchers
 
   class AttributeMatcher
@@ -17,7 +19,7 @@ module RSpec::JsonMatchers
       @document = document.with_indifferent_access
 
       @document.key?(attribute_name) &&
-        expected === @document.fetch(attribute_name) { nil }
+        expected.matches?(@document.fetch(attribute_name, nil))
     end
 
     def failure_message
