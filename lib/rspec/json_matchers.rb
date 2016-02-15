@@ -1,6 +1,6 @@
 require "rspec/json_matchers/version"
 
-module Rspec
+module RSpec
   module JsonMatchers
     autoload :AttributeMatcher, "rspec/json_matchers/attribute_matcher"
     autoload :JsonMatcher,      "rspec/json_matchers/json_matcher"

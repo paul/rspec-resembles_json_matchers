@@ -1,7 +1,7 @@
 module RSpec::JsonMatchers
 
   class AttributeMatcher
-    include PrettyPrintErrors
+    include RSpec::JsonMatchers::Helpers
 
     attr_reader :attribute_name, :expected, :document
 
