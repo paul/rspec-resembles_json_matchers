@@ -1,10 +1,63 @@
-# Rspec::JsonMatchers
+# RSpec::JsonMatchers
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rspec/json_matchers`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem provides a set of matchers that make testing JSON documents (actually
+the hashes parsed from them) simpler and more elegant.
 
-TODO: Delete this and the text above, and describe your gem
+It provides to matchers, `have_attribute` and `match_json`.
 
-## Installation
+## `#have_attribute`
+
+### Example Usage
+
+```ruby
+RSpec.describe "my hash" do
+  include RSpec::JsonMatchers
+
+  let(:subject) do
+    {
+      author: "Paul",
+      gems_published: 42,
+      created_at: "2016-01-01T00:00:00Z"
+    }
+  end
+
+  # Test that the key is present, regardless of value (even nil)
+  it { should have_attribute :author }
+
+  # Test the value by using another matcher
+  it { should have_attribute :author, eq("Paul") }
+  it { should have_attribute :author, match(/Paul/) }
+  it { should have_attribute :gems_published, be > 40 }
+  it { should have_attribute :created_at, iso8601_timestamp }
+end
+```
+
+It will also provide nice descriptions in the rspec doc format, and useful
+failure messages:
+
+```
+my hash
+  should have attribute :author be present
+  should have attribute :author eq "Paul"
+  should have attribute :author match /Paul/
+  should have attribute :gems_published be > 40
+  should have attribute :created_at match /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/
+
+Failures:
+
+  1) my hash should have attribute :full_name be present
+     Failure/Error: it { should have_attribute :full_name }
+       Expected attribute :full_name to be present
+     # ./spec/examples_spec.rb:24:in `block (2 levels) in <top (required)>'
+
+  2) my hash should have attribute :author match /paul/
+     Failure/Error: it { should have_attribute :author, match(/paul/) }
+       Expected value of attribute :author to match /paul/ but it was "Paul"
+     # ./spec/examples_spec.rb:25:in `block (2 levels) in <top (required)>'
+```
+
+
+# Installation
 
 Add this line to your application's Gemfile:
 
@@ -20,17 +73,7 @@ Or install it yourself as:
 
     $ gem install rspec-json_matchers
 
-## Usage
+# Contributing
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rspec-json_matchers.
+Bug reports and pull requests are welcome on GitHub at https://github.com/paul/rspec-json_matchers.
 

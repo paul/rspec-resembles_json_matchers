@@ -116,7 +116,8 @@ RSpec.describe RSpec::JsonMatchers::AttributeMatcher do
       before { matcher.matches? example_hash }
 
       specify { expect(failure_message).to start_with "Expected value of attribute :does_not_exist" }
-      specify { expect(failure_message).to end_with value_matcher.description }
+      specify { expect(failure_message).to include value_matcher.description }
+      specify { expect(failure_message).to end_with "but it was nil" }
     end
   end
 end

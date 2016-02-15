@@ -31,7 +31,9 @@ module RSpec::JsonMatchers
         msgs = ["Expected value of attribute",
                 attribute_name.inspect,
                 "to",
-                expected.description]
+                expected.description,
+                "but it was",
+                document[attribute_name].inspect]
       end
       sentencize(*msgs)
     end
