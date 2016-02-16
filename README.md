@@ -1,5 +1,7 @@
 # RSpec::JsonApiMatchers
 
+[![Gem Version](https://badge.fury.io/rb/rspec-json_api_matchers.svg)](https://badge.fury.io/rb/rspec-json_api_matchers)
+
 This gem provides a set of matchers that make testing JSON documents (actually
 the hashes parsed from them) simpler and more elegant.
 
