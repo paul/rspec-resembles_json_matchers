@@ -1,5 +1,5 @@
 module Rspec
-  module JsonMatchers
+  module JsonApiMatchers
     VERSION = "0.1.0"
   end
 end

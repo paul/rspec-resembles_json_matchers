@@ -3,10 +3,10 @@ require "active_support/core_ext/hash/keys"     # stringify_keys
 
 require "json"
 
-module RSpec::JsonMatchers
+module RSpec::JsonApiMatchers
   class JsonMatcher
     include RSpec::Matchers::Composable
-    include RSpec::JsonMatchers::Helpers
+    include RSpec::JsonApiMatchers::Helpers
 
     def initialize(expected_json)
       @expected_json = expected_json.stringify_keys
@@ -16,7 +16,7 @@ module RSpec::JsonMatchers
     def matches?(actual_json)
       @actual_json = actual_json
       expected_matchers.each do |expected_key, value_matcher|
-        attr_matcher = RSpec::JsonMatchers::AttributeMatcher.new(expected_key, value_matcher)
+        attr_matcher = RSpec::JsonApiMatchers::AttributeMatcher.new(expected_key, value_matcher)
         match = attr_matcher.matches?(@actual_json)
         @failed_matchers[expected_key] = attr_matcher unless match
       end

@@ -1,9 +1,9 @@
-# RSpec::JsonMatchers
+# RSpec::JsonApiMatchers
 
 This gem provides a set of matchers that make testing JSON documents (actually
 the hashes parsed from them) simpler and more elegant.
 
-It provides to matchers, `have_attribute` and `match_json`.
+It provides two matchers, `have_attribute` and `match_json`.
 
 ## `#have_attribute`
 
@@ -14,7 +14,7 @@ match against its value.
 
 ```ruby
 RSpec.describe "my hash" do
-  include RSpec::JsonMatchers
+  include RSpec::JsonApiMatchers
 
   subject(:response_document) do
     {
@@ -69,7 +69,7 @@ This matcher builds upon `#have_attribute` to let you test an entire JSON docume
 
 ```ruby
 RSpec.describe "my json response document" do
-  include RSpec::JsonMatchers
+  include RSpec::JsonApiMatchers
 
   subject(:response_document) do
     {
@@ -148,7 +148,7 @@ my json response document
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rspec-json_matchers'
+gem 'rspec-json_api_matchers'
 ```
 
 And then execute:
@@ -157,9 +157,9 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install rspec-json_matchers
+    $ gem install rspec-json_api_matchers
 
 # Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/paul/rspec-json_matchers.
+Bug reports and pull requests are welcome on GitHub at https://github.com/paul/rspec-json_api_matchers.
 

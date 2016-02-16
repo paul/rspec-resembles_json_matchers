@@ -1,4 +1,4 @@
-module RSpec::JsonMatchers
+module RSpec::JsonApiMatchers
   module Helpers
     # Returns string composed of the specified clauses with proper
     # spacing between them. Empty and nil clauses are ignored.

@@ -1,6 +1,6 @@
 require_relative "../spec_helper"
 
-RSpec.describe RSpec::JsonMatchers::AttributeMatcher do
+RSpec.describe RSpec::JsonApiMatchers::AttributeMatcher do
 
   let(:example_hash) do
     {
