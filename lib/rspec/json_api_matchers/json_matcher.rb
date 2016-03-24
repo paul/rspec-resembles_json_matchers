@@ -16,7 +16,7 @@ module RSpec::JsonApiMatchers
     def matches?(actual_json)
       @actual_json = actual_json
       expected_matchers.each do |expected_key, value_matcher|
-        attr_matcher = RSpec::JsonApiMatchers::AttributeMatcher.new(expected_key, value_matcher)
+        attr_matcher = AttributeMatcher.new(expected_key, value_matcher)
         match = attr_matcher.matches?(@actual_json)
         @failed_matchers[expected_key] = attr_matcher unless match
       end
