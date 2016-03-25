@@ -3,10 +3,10 @@ require "active_support/core_ext/hash/keys"     # stringify_keys
 
 require "json"
 
-module RSpec::JsonApiMatchers
+module RSpec::ResemblesJsonMatchers
   class JsonMatcher
     include RSpec::Matchers::Composable
-    include RSpec::JsonApiMatchers::Helpers
+    include RSpec::ResemblesJsonMatchers::Helpers
 
     def initialize(expected_json)
       @expected_json = expected_json.stringify_keys

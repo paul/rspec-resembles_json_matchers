@@ -1,8 +1,8 @@
 require_relative "spec_helper"
 
-RSpec.describe RSpec::JsonApiMatchers do
+RSpec.describe RSpec::ResemblesJsonMatchers do
   subject do
-    Class.new { include RSpec::JsonApiMatchers }.new
+    Class.new { include RSpec::ResemblesJsonMatchers }.new
   end
 
   specify { expect(subject.have_attribute(:a)).to be_a_matcher }

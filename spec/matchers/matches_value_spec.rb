@@ -1,6 +1,6 @@
 require_relative "../spec_helper"
 
-RSpec.describe RSpec::JsonApiMatchers::ResemblesMatcher do
+RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesMatcher do
 
   subject(:matcher) { described_class.new(expected) }
   let(:description) { matcher.description }

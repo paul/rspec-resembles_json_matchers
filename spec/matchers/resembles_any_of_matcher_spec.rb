@@ -1,8 +1,8 @@
 require_relative "../spec_helper"
 
-RSpec.describe RSpec::JsonApiMatchers::ResemblesMatcher do
+RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesMatcher do
 
-  subject(:matcher) { RSpec::JsonApiMatchers::ResemblesAnyOfMatcher.new(matcher_candidates) }
+  subject(:matcher) { RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher.new(matcher_candidates) }
 
   context "when every item in the given array matches one of the matchers" do
     let(:given) { [ 1, 2, "foo" ] }

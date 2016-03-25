@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rspec/json_api_matchers/version'
+require 'rspec/resembles_json_matchers/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "rspec-json_api_matchers"
-  spec.version       = Rspec::JsonApiMatchers::VERSION
+  spec.name          = "rspec-resembles_json_matchers"
+  spec.version       = Rspec::ResemblesJsonMatchers::VERSION
   spec.authors       = ["Paul Sadauskas"]
   spec.email         = ["psadauskas@gmail.com"]
 
   spec.summary       = %q{Helpful matchers for comparing JSON documents.}
-  spec.homepage      = "https://github.com/paul/rspec-json_api_matchers"
+  spec.homepage      = "https://github.com/paul/rspec-resembles_json_matchers"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.

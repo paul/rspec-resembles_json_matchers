@@ -2,7 +2,7 @@ require_relative "spec_helper"
 require "rspec/json_api_matchers"
 
 RSpec.describe "my hash" do
-  include RSpec::JsonApiMatchers
+  include RSpec::ResemblesJsonMatchers
 
   subject(:response_document) do
     {
@@ -26,7 +26,7 @@ RSpec.describe "my hash" do
 end
 
 RSpec.describe "my json response document" do
-  include RSpec::JsonApiMatchers
+  include RSpec::ResemblesJsonMatchers
 
   subject(:response_document) do
     {

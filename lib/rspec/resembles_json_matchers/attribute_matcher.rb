@@ -1,9 +1,9 @@
 require "active_support/core_ext/hash/indifferent_access"
 
-module RSpec::JsonApiMatchers
+module RSpec::ResemblesJsonMatchers
 
   class AttributeMatcher
-    include RSpec::JsonApiMatchers::Helpers
+    include RSpec::ResemblesJsonMatchers::Helpers
 
     attr_reader :attribute_name, :expected, :document
 

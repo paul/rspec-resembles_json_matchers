@@ -1,4 +1,4 @@
-# RSpec::JsonApiMatchers
+# RSpec::ResemblesJsonMatchers
 
 [![Gem Version](https://badge.fury.io/rb/rspec-json_api_matchers.svg)](https://badge.fury.io/rb/rspec-json_api_matchers)[![Build Status](https://travis-ci.org/paul/rspec-json_api_matchers.svg?branch=master)](https://travis-ci.org/paul/rspec-json_api_matchers)
 
@@ -16,7 +16,7 @@ match against its value.
 
 ```ruby
 RSpec.describe "my hash" do
-  include RSpec::JsonApiMatchers
+  include RSpec::ResemblesJsonMatchers
 
   subject(:response_document) do
     {
@@ -71,7 +71,7 @@ This matcher builds upon `#have_attribute` to let you test an entire JSON docume
 
 ```ruby
 RSpec.describe "my json response document" do
-  include RSpec::JsonApiMatchers
+  include RSpec::ResemblesJsonMatchers
 
   subject(:response_document) do
     {

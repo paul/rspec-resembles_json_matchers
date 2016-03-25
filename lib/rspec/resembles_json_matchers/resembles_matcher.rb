@@ -1,6 +1,6 @@
 require "active_support/core_ext/array/wrap"
 
-module RSpec::JsonApiMatchers
+module RSpec::ResemblesJsonMatchers
 
   module Matcherizer
     def matcherize(expected)
@@ -8,7 +8,7 @@ module RSpec::JsonApiMatchers
         expected
 
       elsif expected.is_a?(Hash)
-        RSpec::JsonApiMatchers::JsonMatcher.new(expected)
+        RSpec::ResemblesJsonMatchers::JsonMatcher.new(expected)
 
       elsif expected.respond_to? :===
         RSpec::Matchers::BuiltIn::Match.new(expected)
@@ -179,7 +179,7 @@ module RSpec::JsonApiMatchers
 
     def matches?(hash)
       expected_matchers.each do |expected_key, value_matcher|
-        attr_matcher = RSpec::JsonApiMatchers::AttributeMatcher.new(expected_key, value_matcher)
+        attr_matcher = RSpec::ResemblesJsonMatchers::AttributeMatcher.new(expected_key, value_matcher)
         match = attr_matcher.matches?(hash)
         @failed_matches[expected_key] = attr_matcher unless match
       end
