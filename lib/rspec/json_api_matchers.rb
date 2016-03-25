@@ -3,6 +3,7 @@ require "rspec/json_api_matchers/version"
 module RSpec
   module JsonApiMatchers
     autoload :AttributeMatcher, "rspec/json_api_matchers/attribute_matcher"
+    autoload :ResemblesMatcher, "rspec/json_api_matchers/resembles_matcher"
     autoload :JsonMatcher,      "rspec/json_api_matchers/json_matcher"
     autoload :Helpers,          "rspec/json_api_matchers/helpers"
 
