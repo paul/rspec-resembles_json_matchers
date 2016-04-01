@@ -18,7 +18,7 @@ module RSpec::ResemblesJsonMatchers
       actual.kind_of? @expected
     end
 
-    def pretty_expected
+    def expected_formatted
       @expected
     end
 

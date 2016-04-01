@@ -25,14 +25,14 @@ module RSpec::ResemblesJsonMatchers
 
     def description
       # TODO Figure out how to discover the right indent level
-      "have json that looks like\n#{pretty_expected.indent(6)}"
+      "have json that looks like\n#{expected_formatted.indent(6)}"
     end
 
     def failure_message
       msgs = [ "Expected:",
                 pretty_actual.indent(2),
                 "To match:",
-                pretty_expected.indent(2),
+                expected_formatted.indent(2),
                 "Failures:",
                 pretty_errors.indent(2) ]
       msgs.join("\n")
@@ -42,7 +42,7 @@ module RSpec::ResemblesJsonMatchers
       JSON.pretty_generate(obj)
     end
 
-    def pretty_expected
+    def expected_formatted
       pretty_json(@expected_json)
     end
 
@@ -58,7 +58,7 @@ module RSpec::ResemblesJsonMatchers
       end
     end
 
-    def pretty_expected
+    def expected_formatted
       out = "{\n"
       out << expected_matchers.map do |k,v|
         case v

@@ -10,6 +10,7 @@ module RSpec
 
     autoload :ResemblesHashMatcher,    "rspec/resembles_json_matchers/resembles_hash_matcher"
     autoload :ResemblesArrayMatcher,   "rspec/resembles_json_matchers/resembles_array_matcher"
+    autoload :ResemblesAnyOfMatcher,   "rspec/resembles_json_matchers/resembles_any_of_matcher"
     autoload :ResemblesRouteMatcher,   "rspec/resembles_json_matchers/resembles_route_matcher"
     autoload :ResemblesDateMatcher,    "rspec/resembles_json_matchers/resembles_date_matcher"
     autoload :ResemblesNumericMatcher, "rspec/resembles_json_matchers/resembles_numeric_matcher"

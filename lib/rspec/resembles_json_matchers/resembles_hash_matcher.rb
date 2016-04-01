@@ -40,7 +40,7 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def description
-      "resemble json\n" + pretty_expected.indent(2)
+      "resemble json\n" + expected_formatted.indent(2)
     end
 
     def failure_message
@@ -73,10 +73,10 @@ module RSpec::ResemblesJsonMatchers
       @unmatched_matchers ||= expected_matchers.dup
     end
 
-    def pretty_expected
+    def expected_formatted
       out = "{\n"
       out << expected_matchers.map do |k,v|
-        %{  "%s": %s} % [k, v.respond_to?(:pretty_expected) ? v.pretty_expected : v.description]
+        %{  "%s": %s} % [k, v.expected_formatted]
       end.join(",\n")
       out << "\n}\n"
     end

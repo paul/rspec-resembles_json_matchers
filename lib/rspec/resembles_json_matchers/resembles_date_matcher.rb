@@ -1,3 +1,4 @@
+require "time"
 
 module RSpec::ResemblesJsonMatchers
   class ResemblesDateMatcher
@@ -32,7 +33,7 @@ module RSpec::ResemblesJsonMatchers
       self.class.can_match?(actual)
     end
 
-    def pretty_expected
+    def expected_formatted
       @expected.inspect.to_s
     end
 

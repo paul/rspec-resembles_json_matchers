@@ -31,7 +31,7 @@ RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesHashMatcher do
                   resemble json
                     {
                       "id": 1,
-                      "type": eq "Post",
+                      "type": "Post",
                       "title": String,
                       "published_at": "2016-01-01T00:00:00Z"
                     }

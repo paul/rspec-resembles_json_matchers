@@ -1,6 +1,6 @@
 require_relative "../spec_helper"
 
-RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesMatcher do
+RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher do
 
   subject(:matcher) { RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher.new(matcher_candidates) }
 
@@ -38,7 +38,7 @@ RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesMatcher do
       specify { expect(matcher.description).to eq <<-TXT.strip_heredoc
                   have every item match one of:
                     should be a kind of Integer
-                    should match "foo"
+                    should resemble text "foo"
         TXT
       }
     end
