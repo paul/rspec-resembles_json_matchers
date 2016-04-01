@@ -1,5 +1,5 @@
 require_relative "spec_helper"
-require "rspec/json_api_matchers"
+require "rspec/resembles_json_matchers"
 
 RSpec.describe "my hash" do
   include RSpec::ResemblesJsonMatchers

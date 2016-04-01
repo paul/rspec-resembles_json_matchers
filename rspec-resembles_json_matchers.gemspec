@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "awesome_print"
 
   spec.add_runtime_dependency "rspec", ">= 2.0", "< 4.0.0.a"
   spec.add_runtime_dependency "rspec-expectations", ">= 2.0", "< 4.0.0.a"
