@@ -3,7 +3,8 @@ module RSpec::ResemblesJsonMatchers
   class ResemblesRouteMatcher
     ROUTE_REGEX = %r{\A/.*:}.freeze
     def self.can_match?(route_string)
-      route_string.is_a?(String) &&
+      defined?(ActionDispatch) &&
+        route_string.is_a?(String) &&
         route_string.start_with?("/") &&
         route_string.include?(":")
     end

@@ -29,11 +29,18 @@ module RSpec
       AttributeMatcher.new(*a)
     end
 
+    def resembles(*a)
+      RSpec::ResemblesJsonMatchers.resembles_matcher_for(*a).new(*a)
+    end
+    alias resemble resembles
+    alias resemble_json resembles
+
     def self.resembles_matcher_candidates
       # Order matters
       @candidates ||= [
         ResemblesHashMatcher,
-        ResemblesArrayMatcher,
+        #ResemblesArrayMatcher,
+        ResemblesAnyOfMatcher,
         ResemblesRouteMatcher,
         ResemblesDateMatcher,
         ResemblesNumericMatcher,

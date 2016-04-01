@@ -5,7 +5,7 @@
 This gem provides a set of matchers that make testing JSON documents (actually
 the hashes parsed from them) simpler and more elegant.
 
-It provides two matchers, `have_attribute` and `match_json`.
+It provides two primary matchers, `have_attribute` and `resembles`/`resembles_json`.
 
 ## `#have_attribute`
 
@@ -63,85 +63,143 @@ Failures:
      # ./spec/examples_spec.rb:25:in `block (2 levels) in <top (required)>'
 ```
 
-## `#match_json`
+## `#resembles_json`
 
 This matcher builds upon `#have_attribute` to let you test an entire JSON document in a single example, but still provide detailed errors about each attribute.
+
+Additionally, it does "fuzzy" matching on the fields (unless a matcher is explicitly given), because its primary purpose it do have a clear and concise example of the API output for documentation.
+
+See the examples folder for more.
 
 ### Example Usage
 
 ```ruby
-RSpec.describe "my json response document" do
-  include RSpec::ResemblesJsonMatchers
-
-  subject(:response_document) do
+RSpec.describe "a basic json document" do
+  let(:document) do
     {
-      author: "Paul",
-      gems_published: 42,
-      created_at: "2016-01-01T00:00:00Z"
+      "@id": "/posts/2016/test1",
+      "@type": "Post",
+      "title": "Hello World!",
+      "body": "lorem ipsum",
+      "created_at": "2016-03-01T00:03:42",
+      "published_at": "2016-03-10T15:35:00"
     }
   end
 
-  it { should match_json(
-    {
-      author: "Paul",
-      gems_published: be > 40,
-      created_at: iso8601_timestamp
-    }
-  )}
-
+  specify do
+    expect(document).to resemble_json(
+      {
+        "@id": "/posts/:year/:title",
+        "@type": eq("Post"),
+        "title": "Hello World!",
+        "body": "lorem ipsum",
+        "created_at": "2016-03-01T00:03:42",
+        "published_at": "2016-03-10T15:35:00"
+      }
+    )
+  end
 end
-
 ```
 
-Again, it provides good descriptions and useful failure messages:
+Again, it provides good descriptions:
 
 ```
-my json response document
-  should have json that looks like
+  a basic json document
+    should resemble json
       {
-        "author": "Paul",
-        "gems_published": be > 40,
-        "created_at": match /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/
+        "@id": /posts/:year/:title,
+        "@type": "Post",
+        "title": Hello World!,
+        "body": lorem ipsum,
+        "created_at": "2016-03-01T00:03:42",
+        "published_at": "2016-03-10T15:35:00"
       }
 ```
 
+And useful failure messages:
+
 ```
-  1) my json response document should have json that looks like
-      {
-        "author": "Someone else",
-        "gems_published": be > 40,
-        "created_at": match /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/,
-        "does_not_exist": be present
-      }
+Failures:
+
+  1) The resembles json matcher a basic json document with several attributes that failed to match should resemble json
+  {
+    "@id": /posts/:year/:title,
+    "@type": "PostCollection",
+    "title": 42.0,
+    "body": lorem ipsum,
+    "created_at": "2016-03-01T00:03:42",
+    "published_at": "2016-03-10T15:35:00"
+  }
+
      Failure/Error:
-       it { should match_json(
+       expect(document).to resemble_json(
          {
-           author: "Paul",
-           gems_published: be > 40,
-           created_at: iso8601_timestamp,
-           does_not_exist: be_present,
-           author: "Someone else"
+           "@id": "/posts/:year/:title",
+           "@type": eq("PostCollection"),
+           "title": 42.0,
+           "body": "lorem ipsum",
+           "created_at": "2016-03-01T00:03:42",
+           "published_at": "2016-03-10T15:35:00"
          }
-       )}
+       )
 
-       Expected:
+       failed because
+         attribute "@type":
+           expected: "PostCollection"
+                got: "Post"
+         attribute "title":
+           "Hello World!" does not resemble a number
+     # ./examples/example_spec.rb:40:in `block (4 levels) in <top (required)>'
+
+  2) The resembles json matcher a basic json document when the matcher is missing a field that is present in the document should resemble json
+  {
+    "@id": /posts/:year/:title,
+    "@type": "Post",
+    "body": lorem ipsum,
+    "created_at": "2016-03-01T00:03:42",
+    "published_at": "2016-03-10T15:35:00"
+  }
+
+     Failure/Error:
+       expect(document).to resemble_json(
          {
-           "author": "Paul",
-           "gems_published": 42,
-           "created_at": "2016-01-01T00:00:00Z"
+           "@id": "/posts/:year/:title",
+           "@type": eq("Post"),
+           "body": "lorem ipsum",
+           "created_at": "2016-03-01T00:03:42",
+           "published_at": "2016-03-10T15:35:00"
          }
-       To match:
+       )
+
+       failed because
+         attribute "title":
+           is present, but no matcher provided to match it
+     # ./examples/example_spec.rb:55:in `block (4 levels) in <top (required)>'
+
+  3) The resembles json matcher a basic json document when the document is missing a field that is present in the matcher should resemble json
+  {
+    "@id": /posts/:year/:title,
+    "@type": "Post",
+    "body": lorem ipsum,
+    "created_at": "2016-03-01T00:03:42",
+    "published_at": "2016-03-10T15:35:00"
+  }
+
+     Failure/Error:
+       expect(document).to resemble_json(
          {
-           "author": "Someone else",
-           "gems_published": be > 40,
-           "created_at": match /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/,
-           "does_not_exist": be present
+           "@id": "/posts/:year/:title",
+           "@type": eq("Post"),
+           "body": "lorem ipsum",
+           "created_at": "2016-03-01T00:03:42",
+           "published_at": "2016-03-10T15:35:00"
          }
-       Failures:
-         {
-           "author": Expected value of attribute "author" to eq "Someone else" but it was "Paul",
-           "does_not_exist": Expected value of attribute "does_not_exist" to be present but it was nil
-         }
+       )
+
+       failed because
+         attribute "title":
+           is present, but no matcher provided to match it
+     # ./examples/example_spec.rb:69:in `block (4 levels) in <top (required)>'
 ```
 
 

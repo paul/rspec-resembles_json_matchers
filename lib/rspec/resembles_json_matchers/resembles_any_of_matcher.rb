@@ -4,6 +4,10 @@ module RSpec::ResemblesJsonMatchers
   class ResemblesAnyOfMatcher
     include Helpers
 
+    def self.can_match?(array)
+      array.is_a? Array
+    end
+
     def initialize(expected)
       @expected = expected
     end
@@ -26,7 +30,7 @@ module RSpec::ResemblesJsonMatchers
       sentencize ["Expected every item to match one of:\n",
                   expected_formatted,
                   "The item at",
-                  failed_item_indexes,
+                  # failed_item_indexes,
                   "did not because:\n",
                   failure_messages]
 
@@ -47,6 +51,9 @@ module RSpec::ResemblesJsonMatchers
           end
         end.join("\n")
       end << "\n"
+    end
+
+    def failure_messages
     end
 
   end
