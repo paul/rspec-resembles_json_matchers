@@ -40,4 +40,8 @@ guard :rspec, cmd: "bundle exec rspec" do
   ruby = dsl.ruby
   dsl.watch_spec_files_for(ruby.lib_files)
 
+  watch(%r{^lib/rspec/resembles_json_matchers/(.+_matcher)\.rb$}) do |m|
+    "spec/matchers/#{m[1]}_spec.rb"
+  end
+
 end
