@@ -26,6 +26,9 @@ module RSpec::ResemblesJsonMatchers
     def expected_matchers
       @expected.map { |e| matcherize(e) }
     end
+
+    def failure_message
+    end
   end
 
 
