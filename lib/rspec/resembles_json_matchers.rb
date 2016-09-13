@@ -1,4 +1,5 @@
 require "rspec/resembles_json_matchers/version"
+require "rspec/resembles_json_matchers/string_indent"
 
 module RSpec
   module ResemblesJsonMatchers

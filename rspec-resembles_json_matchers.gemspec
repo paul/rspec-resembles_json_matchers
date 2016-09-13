@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "rspec", ">= 2.0", "< 4.0.0.a"
   spec.add_runtime_dependency "rspec-expectations", ">= 2.0", "< 4.0.0.a"
-  spec.add_runtime_dependency "activesupport", ">= 4.0" # For String#indent
+  spec.add_runtime_dependency "activesupport", ">= 3.0" # For core extensions
 end
