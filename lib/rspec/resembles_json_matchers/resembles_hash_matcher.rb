@@ -1,5 +1,3 @@
-require "active_support/core_ext/string/indent" # indent
-
 module RSpec::ResemblesJsonMatchers
   class ResemblesHashMatcher
     include Helpers
