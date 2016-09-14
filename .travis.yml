@@ -5,6 +5,7 @@ rvm:
   - ruby-head
 before_install: gem install bundler -v 1.11.2
 gemfile:
+  - gemfiles/rails_32.gemfile
   - gemfiles/rails_42.gemfile
   - gemfiles/rails_42_rspec_33.gemfile
   - gemfiles/rails_5.gemfile
