@@ -51,7 +51,7 @@ module RSpec
     end
 
     def self.resembles_matcher_for(expected, **a)
-      resembles_matcher_candidates.detect { |candidate| candidate.can_match?(expected) }
+      resembles_matcher_candidates.detect { |candidate| candidate.can_match?(expected) } || raise "No matcher available for #{expected.inspect}"
     end
 
   end
