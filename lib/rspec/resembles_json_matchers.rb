@@ -16,6 +16,8 @@ module RSpec
     autoload :ResemblesDateMatcher,    "rspec/resembles_json_matchers/resembles_date_matcher"
     autoload :ResemblesNumericMatcher, "rspec/resembles_json_matchers/resembles_numeric_matcher"
     autoload :ResemblesStringMatcher,  "rspec/resembles_json_matchers/resembles_string_matcher"
+    autoload :ResemblesBooleanMatcher, "rspec/resembles_json_matchers/resembles_boolean_matcher"
+    autoload :ResemblesNilMatcher,     "rspec/resembles_json_matchers/resembles_nil_matcher"
     autoload :ResemblesClassMatcher,   "rspec/resembles_json_matchers/resembles_class_matcher"
 
     def iso8601_timestamp
@@ -47,6 +49,7 @@ module RSpec
         ResemblesNumericMatcher,
         ResemblesStringMatcher,
         ResemblesBooleanMatcher,
+        ResemblesNilMatcher,
         ResemblesClassMatcher
       ].freeze
     end
