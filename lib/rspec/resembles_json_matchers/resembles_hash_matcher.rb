@@ -54,7 +54,7 @@ module RSpec::ResemblesJsonMatchers
     def expected_matchers
       @expected_matchers ||= {}.tap do |hsh|
         expected.each do |key, value_matcher|
-          hsh[key] = matcherize(value_matcher)
+          hsh[key.to_s] = matcherize(value_matcher)
         end
       end
     end
@@ -89,19 +89,19 @@ module RSpec::ResemblesJsonMatchers
                  .indent(2)
 
         "attribute #{k.to_s.inspect}:\n#{matcher_failure_message}"
-      end.join("\n")
+      end.join("\n") + "\n"
     end
 
     def pretty_unmatched_keys
       unmatched_keys.map do |key|
         "attribute #{key.to_s.inspect}:\n  is present, but no matcher provided to match it"
-      end.join("\n")
+      end.join("\n") + "\n"
     end
 
     def pretty_unmatched_matchers
       unmatched_matchers.map do |key, matcher|
         "attribute #{key.to_s.inspect}:\n  has a matcher defined, but that attribute was not provided"
-      end.join("\n")
+      end.join("\n") + "\n"
     end
 
   end
