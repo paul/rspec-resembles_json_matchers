@@ -46,6 +46,7 @@ module RSpec
         ResemblesDateMatcher,
         ResemblesNumericMatcher,
         ResemblesStringMatcher,
+        ResemblesBooleanMatcher,
         ResemblesClassMatcher
       ].freeze
     end
