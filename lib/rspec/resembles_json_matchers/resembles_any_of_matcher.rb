@@ -13,7 +13,7 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def matches?(actual)
-      Array.wrap(actual).flatten.all? do |a|
+      matches_arity?(actual) && Array.wrap(actual).flatten.all? do |a|
         expected_matchers.any? { |m| m.matches? a }
       end
     end
@@ -56,6 +56,11 @@ module RSpec::ResemblesJsonMatchers
     def failure_messages
     end
 
+    private
+
+    def matches_arity?(actual)
+      Array.wrap(actual).empty? == expected_matchers.empty?
+    end
   end
 
 end
