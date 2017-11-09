@@ -22,7 +22,22 @@ RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher do
     let(:given) { [ 1, 2, "foo" ] }
     let(:matcher_candidates) { [ be_kind_of(Integer) ] }
 
+    specify {
+      expect(matcher.matches? given).to_not be_truthy
+    }
+  end
+
+  context "when given array is empty" do
+    let(:given) { [] }
+    let(:matcher_candidates) { ["foo"] }
+
     specify { expect(matcher.matches? given).to_not be_truthy }
+
+    context "and matchers are empty" do
+      let(:matcher_candidates) { [] }
+
+      specify { expect(matcher.matches? given).to be_truthy }
+    end
   end
 
   describe "#description" do
