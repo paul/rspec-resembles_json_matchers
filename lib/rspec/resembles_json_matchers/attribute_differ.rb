@@ -1,3 +1,5 @@
+require "active_support/inflector"
+
 module RSpec::ResemblesJsonMatchers
   class AttributeDiffer
 
@@ -76,10 +78,14 @@ module RSpec::ResemblesJsonMatchers
       @buffer.print matcher.expected.to_json
     end
 
+    def render_ResemblesClassMatcher(matcher, **opts)
+      @buffer.print matcher.expected.inspect
+    end
+
     def method_missing(method_name, *args, &block)
       if method_name.to_s.start_with?("render_")
         raise NoMethodError, method_name if method_name.to_s.end_with?("Matcher")
-        @buffer.print args.first.to_json
+        @buffer.print RSpec::Support::ObjectFormatter.format(args.first)
       else
         super
       end

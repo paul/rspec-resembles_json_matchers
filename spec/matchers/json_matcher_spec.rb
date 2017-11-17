@@ -191,13 +191,13 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       {
         id: Integer,
         name: match(/Paul/),
-        website: eq("http://sadauskas.com"),
+        website: eq("http://example.com"),
         created_at: Time.parse("2018-01-01T00:00:00Z")
       }
     end
 
     it "should match the document" do
-      expect(result).to be_truthy
+      expect(result).to be_falsey
     end
 
     it "should have a pretty description" do
@@ -206,9 +206,22 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
           {
             "id": Integer,
             "name": /Paul/,
-            "website": "http://sadauskas.com",
+            "website": "http://example.com",
             "created_at": 2018-01-01 00:00:00.000000000 +0000
           }
+      TXT
+    end
+
+    it "should print a diff of the failures" do
+      matcher.matches?(document)
+      expect(failure_message).to eq(<<~TXT.strip)
+        {
+          "id": Integer,
+          "name": match /Paul/,
+        - "website": eq "http://example.com",
+        + "website": "http://sadauskas.com",
+          "created_at": "2018-01-01 00:00:00 UTC"
+        }
       TXT
     end
   end
