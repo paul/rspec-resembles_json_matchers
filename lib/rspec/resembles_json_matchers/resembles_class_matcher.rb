@@ -5,6 +5,8 @@ module RSpec::ResemblesJsonMatchers
       klass.is_a? Class
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
     end

@@ -1,58 +1,50 @@
-require "active_support/core_ext/hash/keys"     # stringify_keys
-
+require "active_support/core_ext/hash/keys" # stringify_keys
 require "json"
+
+require "rspec/resembles_json_matchers/attribute_differ"
 
 module RSpec::ResemblesJsonMatchers
   class JsonMatcher
     include RSpec::Matchers::Composable
-    include RSpec::ResemblesJsonMatchers::Helpers
+    include Helpers
+
+    def self.can_match?(hash)
+      hash.is_a? Hash
+    end
+
+    attr_reader :expected, :actual
 
     def initialize(expected_json)
-      @expected_json = expected_json.stringify_keys
-      @failed_matchers = {}
+      @expected = expected_json.deep_stringify_keys
     end
 
     def matches?(actual_json)
-      @actual_json = actual_json
-      expected_matchers.each do |expected_key, value_matcher|
-        attr_matcher = AttributeMatcher.new(expected_key, value_matcher)
-        match = attr_matcher.matches?(@actual_json)
-        @failed_matchers[expected_key] = attr_matcher unless match
+      @actual = actual_json.deep_stringify_keys
+      all_passed = true
+      expected_matchers.each do |key, attr_matcher|
+        result = attr_matcher.matches?(actual)
+        all_passed &&= result
       end
-      @failed_matchers.size == 0
+      all_passed
     end
 
     def description
       # TODO Figure out how to discover the right indent level
-      "have json that looks like\n#{expected_formatted.indent(6)}"
+      "have json that looks like\n#{expected_formatted.indent(2)}"
     end
 
     def failure_message
-      msgs = [ "Expected:",
-                pretty_actual.indent(2),
-                "To match:",
-                expected_formatted.indent(2),
-                "Failures:",
-                pretty_errors.indent(2) ]
-      msgs.join("\n")
+      AttributeDiffer.new(self).to_s
     end
 
-    def pretty_json(obj)
-      JSON.pretty_generate(obj)
-    end
-
-    def expected_formatted
-      pretty_json(@expected_json)
-    end
-
-    def pretty_actual
-      pretty_json(@actual_json)
+    def to_json
+      failure_message
     end
 
     def expected_matchers
       @expected_matchers ||= {}.tap do |hsh|
-        @expected_json.each do |k,v|
-          hsh[k] = v.respond_to?(:description) ? v : RSpec::Matchers::BuiltIn::Eq.new(v)
+        expected.each do |k,v|
+          hsh[k.to_s] = AttributeMatcher.new(k, matcherize(v))
         end
       end
     end
@@ -60,23 +52,34 @@ module RSpec::ResemblesJsonMatchers
     def expected_formatted
       out = "{\n"
       out << expected_matchers.map do |k,v|
-        case v
-        when RSpec::Matchers::BuiltIn::Eq
-          %{"#{k}": #{v.expected_formatted}}.indent(2)
-        else
-          %{"#{k}": #{v.description}}.indent(2)
+        %{"#{k}": #{RSpec::Support::ObjectFormatter.format(v.expected_value)}}.indent(2)
+      end.join(",\n")
+      out << "\n}"
+    end
+
+    def color_lines(text)
+      text.split("\n").map do |line|
+        case line.chr[0]
+          when "-" then red line
+          when "+" then green line
         end
-      end.join(",\n")
-      out << "\n}"
+      end.compact
     end
 
-    def pretty_errors
-      out = "{\n"
-      out << @failed_matchers.map do |k,v|
-        %{"#{k}": #{v.failure_message}}.indent(2)
-      end.join(",\n")
-      out << "\n}"
+    def color(text, color_code)
+      "\e[#{color_code}m#{text}\e[0m"
     end
 
+    def red(text)
+      color(text, 31)
+    end
+
+    def green(text)
+      color(text, 32)
+    end
+
+    def normal(text)
+      color(text, 0)
+    end
   end
 end

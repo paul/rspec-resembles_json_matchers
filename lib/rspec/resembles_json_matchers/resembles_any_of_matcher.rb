@@ -13,8 +13,8 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def matches?(actual)
-      Array.wrap(actual).flatten.all? do |a|
-        expected_matchers.any? { |m| m.matches? a }
+      Array.wrap(actual).all? do |a|
+        expected_matchers.any? { |m| attempted_matchers << m; m.matches? a }
       end
     end
 
@@ -38,6 +38,10 @@ module RSpec::ResemblesJsonMatchers
 
     def expected_matchers
       @expected.map { |e| matcherize(e) }
+    end
+
+    def attempted_matchers
+      @attempted_matchers ||= []
     end
 
     def expected_formatted

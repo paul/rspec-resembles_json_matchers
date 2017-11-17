@@ -18,30 +18,27 @@ module RSpec::ResemblesJsonMatchers
     def matches?(document)
       @document = document.with_indifferent_access
 
-      @document.key?(attribute_name) &&
-        expected.matches?(@document.fetch(attribute_name, nil))
+      @matched = !missing_attribute? && expected.matches?(actual_value)
     end
 
-    def failure_message
-      if expected === NullMatcher
-        msgs = ["Expected attribute",
-                attribute_name.inspect,
-                "to be present"]
-      else
-        msgs = ["Expected value of attribute",
-                attribute_name.inspect,
-                "to",
-                expected.description,
-                "but it was",
-                document[attribute_name].inspect]
-      end
-      sentencize(*msgs)
+    def matched?
+      @matched
     end
 
-    def failure_message_when_negated
-      sentencize "Expected attribute #{attribute_name.inspect}",
-                 expected.description,
-                 "to be absent"
+    def value_matcher
+      @expected
+    end
+
+    def expected_value
+      value_matcher.expected
+    end
+
+    def actual_value
+      document.fetch(attribute_name, nil)
+    end
+
+    def missing_attribute?
+      !document.key?(attribute_name)
     end
 
     NullMatcher = Class.new do
@@ -63,23 +60,5 @@ module RSpec::ResemblesJsonMatchers
       end
     end.new
 
-    def matcherize(expected)
-      if matcher? expected
-        expected
-
-      elsif expected.respond_to? :===
-        RSpec::Matchers::Builtin::Match.new(expected)
-
-      else
-        RSpec::Matchers::Builtin::Eq.new(expected)
-      end
-    end
-
-    def matcher?(obj)
-      obj.respond_to(:matches?) && (obj.respond_to?(:failure_message) ||
-                                     obj.respond_to?(:failure_message_for_should))
-    end
-
   end
-
 end

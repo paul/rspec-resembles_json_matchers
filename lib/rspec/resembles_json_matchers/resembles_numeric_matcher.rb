@@ -7,6 +7,8 @@ module RSpec::ResemblesJsonMatchers
         number =~ NUMBER_REGEX
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
     end
@@ -22,6 +24,10 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def expected_formatted
+      @expected
+    end
+
+    def to_json
       @expected
     end
 

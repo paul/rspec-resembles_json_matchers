@@ -25,6 +25,7 @@ module RSpec
     def match_json(*a)
       JsonMatcher.new(*a)
     end
+    alias resemble_json match_json
 
     def have_attribute(*a)
       AttributeMatcher.new(*a)
@@ -34,12 +35,12 @@ module RSpec
       RSpec::ResemblesJsonMatchers.resembles_matcher_for(*a).new(*a)
     end
     alias resemble resembles
-    alias resemble_json resembles
 
     def self.resembles_matcher_candidates
       # Order matters
       @candidates ||= [
-        ResemblesHashMatcher,
+        JsonMatcher,
+        #ResemblesHashMatcher,
         #ResemblesArrayMatcher,
         ResemblesAnyOfMatcher,
         ResemblesRouteMatcher,
@@ -51,7 +52,7 @@ module RSpec
     end
 
     def self.resembles_matcher_for(expected, **a)
-      resembles_matcher_candidates.detect { |candidate| candidate.can_match?(expected) } || raise("No matcher available for #{expected.inspect}")
+      resembles_matcher_candidates.detect { |candidate| candidate.can_match?(expected) } || RSpec::Matchers::BuiltIn::Eq
     end
 
   end
