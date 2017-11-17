@@ -21,6 +21,14 @@ module RSpec::ResemblesJsonMatchers
       @matched = !missing_attribute? && expected.matches?(actual_value)
     end
 
+    def failure_message
+      if missing_attribute?
+        %{Expected document to have attribute #{attribute_name.inspect}}
+      else
+        %{Expected attribute #{attribute_name.inspect} to #{value_matcher.description}, but it was #{actual_value.inspect}}
+      end
+    end
+
     def matched?
       @matched
     end

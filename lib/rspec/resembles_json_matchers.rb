@@ -4,13 +4,9 @@ require "rspec/resembles_json_matchers/string_indent"
 module RSpec
   module ResemblesJsonMatchers
     autoload :AttributeMatcher, "rspec/resembles_json_matchers/attribute_matcher"
-    # autoload :ResemblesMatcher, "rspec/resembles_json_matchers/resembles_matcher"
     autoload :JsonMatcher,      "rspec/resembles_json_matchers/json_matcher"
     autoload :Helpers,          "rspec/resembles_json_matchers/helpers"
-    # autoload :Matcherizer,      "rspec/resembles_json_matchers/matcherizer"
 
-    autoload :ResemblesHashMatcher,    "rspec/resembles_json_matchers/resembles_hash_matcher"
-    autoload :ResemblesArrayMatcher,   "rspec/resembles_json_matchers/resembles_array_matcher"
     autoload :ResemblesAnyOfMatcher,   "rspec/resembles_json_matchers/resembles_any_of_matcher"
     autoload :ResemblesRouteMatcher,   "rspec/resembles_json_matchers/resembles_route_matcher"
     autoload :ResemblesDateMatcher,    "rspec/resembles_json_matchers/resembles_date_matcher"
@@ -27,10 +23,6 @@ module RSpec
     end
     alias resemble_json match_json
 
-    def have_attribute(*a)
-      AttributeMatcher.new(*a)
-    end
-
     def resembles(*a)
       RSpec::ResemblesJsonMatchers.resembles_matcher_for(*a).new(*a)
     end
@@ -40,8 +32,6 @@ module RSpec
       # Order matters
       @candidates ||= [
         JsonMatcher,
-        #ResemblesHashMatcher,
-        #ResemblesArrayMatcher,
         ResemblesAnyOfMatcher,
         ResemblesRouteMatcher,
         ResemblesDateMatcher,
