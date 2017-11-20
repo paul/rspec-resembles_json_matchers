@@ -27,12 +27,6 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def failure_message
-      sentencize ["Expected every item to match one of:\n",
-                  expected_formatted,
-                  "The item at",
-                  # failed_item_indexes,
-                  "did not because:\n",
-                  failure_messages]
 
     end
 
@@ -56,10 +50,5 @@ module RSpec::ResemblesJsonMatchers
         end.join("\n")
       end << "\n"
     end
-
-    def failure_messages
-    end
-
   end
-
 end

@@ -52,7 +52,8 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
 
       it "should have a failure message with a diff containing the mismatch field" do
         matcher.matches?(document)
-        expect(failure_message).to eq(<<~TXT.strip)
+        expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+          Diff:
           {
           - "id": 1,
           + "id": "some string",
@@ -72,7 +73,8 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       end
 
       it "should have a failure message with a diff containing the mismatch field" do
-        expect(failure_message).to eq(<<~TXT.strip)
+        expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+          Diff:
           {
             "id": 1,
             "name": "Paul",
@@ -102,18 +104,13 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
         }
       end
 
-      include RSpec::ResemblesJsonMatchers
-      it "looks nice" do
-        pending "Just for showing actual output"
-        expect(document).to match_json(expected)
-      end
-
       it "should not match the document" do
         expect(result).to be_falsey
       end
 
       it "should have a failure message with a diff containing the mismatch field" do
-        expect(failure_message).to eq(<<~TXT.strip)
+        expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+          Diff:
           {
             "title": "hello",
             "author": {
@@ -165,7 +162,8 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       end
 
       it "should have a failure message with a diff containing the mismatch field" do
-        expect(failure_message).to eq(<<~TXT.strip)
+        expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+          Diff:
           {
             "@context": "/_contexts/Collection.jsonld",
             "@id": "/users",
@@ -214,7 +212,8 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
 
     it "should print a diff of the failures" do
       matcher.matches?(document)
-      expect(failure_message).to eq(<<~TXT.strip)
+      expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+        Diff:
         {
           "id": Integer,
           "name": match /Paul/,
