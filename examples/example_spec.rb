@@ -117,7 +117,65 @@ RSpec.describe "The resembles json matcher" do
         }
       )
     end
+  end
 
+  describe "empty nested documents" do
+    let(:document) do
+      {
+        "@id": "/posts/2016/test1",
+        "@type": "Post",
+        "title": "Hello World!",
+        "body": "lorem ipsum",
+        "created_at": "2016-03-01T00:03:42",
+        "published_at": "2016-03-10T15:35:00"
+      }
+    end
 
+    specify do
+      expect(document).to resemble_json(
+        {
+          "@id": "/posts/:year/:title",
+          "@type": eq("Post"),
+          "title": "Hello World!",
+          "body": "lorem ipsum",
+          "author": {
+            "@id": "/authors/:id",
+            "name": eq("Paul")
+          },
+          "created_at": "2016-03-01T00:03:42",
+          "published_at": "2016-03-10T15:35:00"
+        }
+      )
+    end
+  end
+
+  describe "empty nested array documents" do
+    let(:document) do
+      {
+        "@id": "/posts",
+        "@type": "PostCollection",
+        "nextPage": "/posts?page=2"
+      }
+    end
+
+    specify do
+      expect(document).to resemble_json(
+        {
+          "@id": "/posts",
+          "@type": eq("PostCollection"),
+          "nextPage": "/posts?page=2",
+          "members": [
+            {
+              "@id": "/posts/:year/:title",
+              "@type": eq("Post"),
+              "title": "Hello World!",
+              "body": "lorem ipsum",
+              "created_at": "2016-03-01T00:03:42",
+              "published_at": "2016-03-10T15:35:00"
+            }
+          ]
+        }
+      )
+    end
   end
 end

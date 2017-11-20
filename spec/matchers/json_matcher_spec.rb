@@ -120,9 +120,34 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
           }
         TXT
       end
+
+      context "when nested document is missing entirely" do
+        let(:document) do
+          {
+            title: "hello"
+          }
+        end
+
+        it "should not match the document" do
+          expect(result).to be_falsey
+        end
+
+        it "should have a failure message with a diff containing the missing object" do
+          expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+            Diff:
+            {
+              "title": "hello",
+            - "author": {
+            -   "name": "Paul"
+            - }
+            }
+          TXT
+        end
+
+      end
     end
 
-    context "nested array array of documents" do
+    context "nested array of documents" do
       let(:document) do
         {
           "@context": "/_contexts/Collection.jsonld",

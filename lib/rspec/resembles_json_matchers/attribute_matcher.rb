@@ -46,7 +46,11 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def missing_attribute?
-      !document.key?(attribute_name)
+      !has_attribute?
+    end
+
+    def has_attribute?
+      document && document.key?(attribute_name)
     end
 
     NullMatcher = Class.new do

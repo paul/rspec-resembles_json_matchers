@@ -21,52 +21,90 @@ module RSpec::ResemblesJsonMatchers
       send method_name, matcher, **opts
     end
 
-    def render_JsonMatcher(matcher, depth: 0, starts_on_newline: false, **opts)
-      @buffer.print indent("", depth) if starts_on_newline
-      @buffer.print NORMAL_COLOR
+    def render_JsonMatcher(matcher, prefix: "", starts_on_newline: false, **opts)
+      @buffer.print prefix if starts_on_newline
+      @buffer.print NORMAL_COLOR unless prefix.include?("-")
       @buffer.puts "{"
       matcher.expected_matchers.each do |key, attr_matcher|
         last = (matcher.expected_matchers.keys.last == key)
-        render(attr_matcher, depth: depth + 1, last: last, **opts)
+        render(attr_matcher, prefix: prefix, last: last, **opts)
       end
-      @buffer.print NORMAL_COLOR
-      @buffer.print indent("}", depth)
+      if matcher.actual.nil?
+        @buffer.print REMOVED_COLOR
+        if prefix.include? "-"
+          @buffer.print prefix + "}"
+        else
+          @buffer.print prefix + "- }"
+        end
+      else
+        @buffer.print NORMAL_COLOR unless prefix.include?("-")
+        @buffer.print prefix + "}"
+      end
     end
 
-    def render_AttributeMatcher(matcher, depth: 0, last: false)
-      if matcher.matched? || nested_matcher?(matcher.value_matcher)
+    def render_AttributeMatcher(matcher, prefix: "", last: false)
+      if matcher.matched?
         @buffer.print NORMAL_COLOR
-        @buffer.print indent("#{matcher.attribute_name.to_json}: ", depth)
-        render(matcher.value_matcher, depth: depth)
+        @buffer.print prefix + "  " + "#{matcher.attribute_name.to_json}: "
+        render(matcher.value_matcher, prefix: prefix + "  ")
         @buffer.print(",") unless last
         @buffer.puts
       else
-        @buffer.print REMOVED_COLOR
-        @buffer.print indent("- #{matcher.attribute_name.to_json}: ", depth - 1)
-        render(matcher.value_matcher, depth: depth)
-        @buffer.print NORMAL_COLOR
-        @buffer.print(",") unless last
-        @buffer.puts
-        unless matcher.missing_attribute?
-          @buffer.print ADDED_COLOR
-          @buffer.print indent("+ #{matcher.attribute_name.to_json}: ", depth - 1)
-          render(matcher.actual_value, depth: depth)
+        if nested_matcher?(matcher.value_matcher)
+          if matcher.missing_attribute?
+            prefix = prefix + "- "
+            @buffer.print REMOVED_COLOR
+            @buffer.print prefix + "#{matcher.attribute_name.to_json}: "
+            render(matcher.value_matcher, prefix: prefix)
+            @buffer.print(",") unless last
+            @buffer.puts
+          else
+            @buffer.print NORMAL_COLOR
+            @buffer.print prefix + "  " + "#{matcher.attribute_name.to_json}: "
+            render(matcher.value_matcher, prefix: prefix + "  ")
+            @buffer.print(",") unless last
+            @buffer.puts
+          end
+        else
+          @buffer.print REMOVED_COLOR
+          @buffer.print prefix
+          if prefix.include? "-"
+            @buffer.print "  "
+          else
+            @buffer.print "- "
+          end
+          @buffer.print "#{matcher.attribute_name.to_json}: "
+          render(matcher.value_matcher, prefix: prefix + "  ")
           @buffer.print NORMAL_COLOR
           @buffer.print(",") unless last
           @buffer.puts
+          unless matcher.missing_attribute?
+            @buffer.print ADDED_COLOR
+            @buffer.print prefix + "+ #{matcher.attribute_name.to_json}: "
+            render(matcher.actual_value, prefix: prefix + "  ")
+            @buffer.print NORMAL_COLOR
+            @buffer.print(",") unless last
+            @buffer.puts
+          end
         end
       end
     end
 
-    def render_ResemblesAnyOfMatcher(matcher, depth: 0, **opts)
+    def render_ResemblesAnyOfMatcher(matcher, prefix: "", **opts)
       @buffer.puts "["
-      matcher.attempted_matchers.each do |attempted_matcher|
-        last = (matcher.attempted_matchers.last == attempted_matcher)
-        render attempted_matcher, depth: depth + 1, starts_on_newline: true
-        @buffer.print(",") unless last
+      if matcher.actual.nil? || matcher.actual.empty?
+        example_matcher = matcher.expected.first
+        render example_matcher, prefix: prefix + "  ", starts_on_newline: true
         @buffer.puts
+      else
+        matcher.attempted_matchers.each do |attempted_matcher|
+          last = (matcher.attempted_matchers.last == attempted_matcher)
+          render attempted_matcher, prefix: prefix + "  ", starts_on_newline: true
+          @buffer.print(",") unless last
+          @buffer.puts
+        end
       end
-      @buffer.print indent("]", depth)
+      @buffer.print prefix + "]"
     end
 
     def render_ResemblesStringMatcher(matcher, **opts)
@@ -96,10 +134,6 @@ module RSpec::ResemblesJsonMatchers
 
     def respond_to_missing?(method_name, include_private = false)
       method_name.to_s.start_with?("render_")
-    end
-
-    def indent(text, depth)
-      "  " * depth + text
     end
 
     def nested_matcher?(matcher)
