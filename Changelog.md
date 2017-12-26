@@ -1,3 +1,6 @@
+# 0.7.0
+
+ - Change the output to be a diff-like view rather than verbose prose
 
 # 0.5.2
 
