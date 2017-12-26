@@ -5,6 +5,8 @@ module RSpec::ResemblesJsonMatchers
       string.is_a? String
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
     end
@@ -16,10 +18,6 @@ module RSpec::ResemblesJsonMatchers
     # TODO make sure the lengths are kinda the same? Levenschtien distances?
     def matches?(actual)
       self.class.can_match?(actual)
-    end
-
-    def expected_formatted
-      @expected
     end
   end
 end

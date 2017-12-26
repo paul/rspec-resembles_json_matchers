@@ -5,8 +5,8 @@ RSpec.describe RSpec::ResemblesJsonMatchers do
     Class.new { include RSpec::ResemblesJsonMatchers }.new
   end
 
-  specify { expect(subject.have_attribute(:a)).to be_a_matcher }
   specify { expect(subject.match_json({})).to be_a_matcher }
+  specify { expect(subject.resemble_json({})).to be_a_matcher }
 
   # Support
 

@@ -97,27 +97,35 @@ RSpec.describe RSpec::ResemblesJsonMatchers::AttributeMatcher do
   end
 
   describe "#failure_message" do
-    context "when just a key was provided" do
-      let(:matcher) { described_class.new(key) }
-      subject(:failure_message) { matcher.failure_message }
+    subject(:failure_message) { matcher.failure_message }
+    before { matcher.matches? example_hash }
+
+    context "when the document is missing the attribute" do
       let(:key) { :does_not_exist }
+      subject(:failure_message) { matcher.failure_message }
 
-      before { matcher.matches? example_hash }
+      context "when just a key was provided" do
+        let(:matcher) { described_class.new(key) }
 
-      specify { expect(failure_message).to eq "Expected attribute :does_not_exist to be present" }
+
+        specify { expect(failure_message).to eq "Expected document to have attribute :does_not_exist" }
+      end
+
+      context "when a key and value matcher were provided" do
+        let(:value_matcher) { be_true }
+        let(:matcher) { described_class.new(key, value_matcher) }
+
+        specify { expect(failure_message).to eq "Expected document to have attribute :does_not_exist" }
+      end
     end
 
-    context "when a key and value matcher were provided" do
-      let(:matcher) { described_class.new(key, value_matcher) }
-      subject(:failure_message) { matcher.failure_message }
-      let(:key) { :does_not_exist }
+    context "when the document has the attribute, but it doesn't match" do
       let(:value_matcher) { be_true }
+      let(:key) { :false }
+      let(:matcher) { described_class.new(key, value_matcher) }
 
-      before { matcher.matches? example_hash }
+      specify { expect(failure_message).to eq "Expected attribute :false to be true, but it was false" }
 
-      specify { expect(failure_message).to start_with "Expected value of attribute :does_not_exist" }
-      specify { expect(failure_message).to include value_matcher.description }
-      specify { expect(failure_message).to end_with "but it was nil" }
     end
   end
 end

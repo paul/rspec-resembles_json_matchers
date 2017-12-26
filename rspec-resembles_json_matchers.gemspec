@@ -31,9 +31,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "pry-state"
   spec.add_development_dependency "awesome_print"
 
   spec.add_runtime_dependency "rspec", ">= 2.0", "< 4.0.0.a"
   spec.add_runtime_dependency "rspec-expectations", ">= 2.0", "< 4.0.0.a"
+  spec.add_runtime_dependency "rspec-support", ">= 2.0", "< 4.0.0.a"
   spec.add_runtime_dependency "activesupport", ">= 3.0" # For core extensions
 end

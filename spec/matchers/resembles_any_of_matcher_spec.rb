@@ -43,22 +43,4 @@ RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher do
       }
     end
   end
-
-  describe "#failure_message" do
-    let(:given) { [ 1, 2, "foo" ] }
-    let(:matcher_candidates) { [ be_kind_of(Integer) ] }
-
-    before { expect(matcher.matches? matcher_candidates).to_not be_truthy }
-
-    subject(:failure_message) { matcher.failure_message }
-
-    xspecify { expect(failure_message).to eq <<-TXT.strip_heredoc
-                Expected every item to match on of:
-                  should be a kind of Integer
-                  should match "foo"
-                The item at [2] did not because:
-                  foo
-      TXT
-    }
-  end
 end

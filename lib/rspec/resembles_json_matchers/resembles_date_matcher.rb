@@ -20,8 +20,11 @@ module RSpec::ResemblesJsonMatchers
       end
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
+      # @expected = expected.is_a?(String) ? Time.parse(expected) : expected
     end
 
     def description
@@ -31,10 +34,6 @@ module RSpec::ResemblesJsonMatchers
     def matches?(actual)
       @actual = actual
       self.class.can_match?(actual)
-    end
-
-    def expected_formatted
-      @expected.inspect.to_s
     end
 
     def failure_message

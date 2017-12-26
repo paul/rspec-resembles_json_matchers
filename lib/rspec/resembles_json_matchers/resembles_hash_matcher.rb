@@ -20,7 +20,7 @@ module RSpec::ResemblesJsonMatchers
       expected_matchers.each do |expected_key, value_matcher|
         @matched_keys << expected_key
 
-        attr_matcher = RSpec::ResemblesJsonMatchers::AttributeMatcher.new(expected_key, value_matcher)
+        attr_matcher = AttributeMatcher.new(expected_key, value_matcher)
         match = attr_matcher.matches?(actual)
 
         if match
@@ -42,11 +42,11 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def failure_message
-      "failed because\n" +
-        pretty_failed_matches.indent(2) +
-        pretty_unmatched_keys.indent(2) +
-        pretty_unmatched_matchers.indent(2) +
-        "\n"
+      "failed because\n" + [
+        pretty_failed_matches.indent(2),
+        pretty_unmatched_keys.indent(2),
+        pretty_unmatched_matchers.indent(2)
+      ].join("\n") + "\n"
     end
 
     protected

@@ -24,7 +24,14 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec,
+      # cmd: "bin/rspec --no-profile --fail-fast",
+      cmd: "bin/rspec --no-profile",
+      failed_mode: :keep,
+      run_all: { cmd: "bin/rspec --no-profile --tag ~type:feature" }, # skip feature specs on "all"
+      notification: true,
+      all_on_start: false,
+      all_on_pass: false do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 

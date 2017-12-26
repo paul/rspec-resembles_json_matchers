@@ -8,13 +8,16 @@ module RSpec::ResemblesJsonMatchers
       array.is_a? Array
     end
 
+    attr_reader :expected, :actual
+
     def initialize(expected)
-      @expected = expected
+      @expected = expected.map { |e| matcherize(e) }
     end
 
     def matches?(actual)
-      Array.wrap(actual).flatten.all? do |a|
-        expected_matchers.any? { |m| m.matches? a }
+      @actual = Array.wrap(actual)
+      @actual.all? do |a|
+        expected_matchers.any? { |m| attempted_matchers << m; m.matches? a }
       end
     end
 
@@ -27,17 +30,15 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def failure_message
-      sentencize ["Expected every item to match one of:\n",
-                  expected_formatted,
-                  "The item at",
-                  # failed_item_indexes,
-                  "did not because:\n",
-                  failure_messages]
 
     end
 
     def expected_matchers
-      @expected.map { |e| matcherize(e) }
+      @expected
+    end
+
+    def attempted_matchers
+      @attempted_matchers ||= []
     end
 
     def expected_formatted
@@ -52,10 +53,5 @@ module RSpec::ResemblesJsonMatchers
         end.join("\n")
       end << "\n"
     end
-
-    def failure_messages
-    end
-
   end
-
 end

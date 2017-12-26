@@ -1,11 +1,11 @@
 
 module RSpec::ResemblesJsonMatchers
   class ResemblesNumericMatcher
-    NUMBER_REGEX = /\A\d+\Z/.freeze
     def self.can_match?(number)
-      number.is_a?(Numeric) ||
-        number =~ NUMBER_REGEX
+      number.is_a?(Numeric)
     end
+
+    attr_reader :expected
 
     def initialize(expected)
       @expected = expected
@@ -22,6 +22,10 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def expected_formatted
+      @expected
+    end
+
+    def to_json
       @expected
     end
 
