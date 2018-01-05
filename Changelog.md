@@ -1,3 +1,7 @@
+# 0.7.1
+
+ - Handle rendering when matcher value is null
+
 # 0.7.0
 
  - Change the output to be a diff-like view rather than verbose prose
