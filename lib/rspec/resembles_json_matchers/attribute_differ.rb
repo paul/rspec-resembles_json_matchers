@@ -123,6 +123,10 @@ module RSpec::ResemblesJsonMatchers
       @buffer.print matcher.expected.inspect
     end
 
+    def render_ResemblesNilMatcher(matcher, **opts)
+      @buffer.print "null"
+    end
+
     def method_missing(method_name, *args, &block)
       if method_name.to_s.start_with?("render_")
         raise NoMethodError, method_name if method_name.to_s.end_with?("Matcher")
