@@ -1,3 +1,7 @@
+# 0.7.2
+
+ - Expose `expected` in the nil matcher so the description can be rendered
+
 # 0.7.1
 
  - Handle rendering when matcher value is null
