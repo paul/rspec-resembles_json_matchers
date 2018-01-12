@@ -5,6 +5,8 @@ module RSpec::ResemblesJsonMatchers
       nillish.nil?
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
     end
