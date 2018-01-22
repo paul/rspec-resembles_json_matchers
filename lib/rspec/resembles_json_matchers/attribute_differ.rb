@@ -107,6 +107,10 @@ module RSpec::ResemblesJsonMatchers
       @buffer.print prefix + "]"
     end
 
+    def render_ResemblesBooleanMatcher(matcher, **opts)
+      @buffer.print matcher.expected.to_json
+    end
+
     def render_ResemblesStringMatcher(matcher, **opts)
       @buffer.print matcher.expected.to_json
     end
@@ -125,6 +129,10 @@ module RSpec::ResemblesJsonMatchers
 
     def render_ResemblesNilMatcher(matcher, **opts)
       @buffer.print "null"
+    end
+
+    def render_ResemblesRouteMatcher(matcher, **opts)
+      @buffer.print matcher.expected.inspect
     end
 
     def method_missing(method_name, *args, &block)

@@ -5,6 +5,8 @@ module RSpec::ResemblesJsonMatchers
       bool.is_a?(TrueClass) || bool.is_a?(FalseClass)
     end
 
+    attr_reader :expected
+
     def initialize(expected)
       @expected = expected
     end

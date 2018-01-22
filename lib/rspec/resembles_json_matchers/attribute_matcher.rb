@@ -16,7 +16,7 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def matches?(document)
-      @document = document.with_indifferent_access
+      @document = document.try(:with_indifferent_access)
 
       @matched = !missing_attribute? && expected.matches?(actual_value)
     end

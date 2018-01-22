@@ -15,11 +15,11 @@ module RSpec::ResemblesJsonMatchers
     attr_reader :expected, :actual
 
     def initialize(expected_json)
-      @expected = expected_json.deep_stringify_keys
+      @expected = expected_json.try(:deep_stringify_keys)
     end
 
     def matches?(actual_json)
-      @actual = actual_json.deep_stringify_keys
+      @actual = actual_json.try(:deep_stringify_keys)
       all_passed = true
       expected_matchers.each do |key, attr_matcher|
         result = attr_matcher.matches?(actual)
