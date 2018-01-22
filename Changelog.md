@@ -1,3 +1,8 @@
+# 0.7.3
+
+ - Add a few more missing render methods
+ - Only try to call indifferent_access on Hashes
+
 # 0.7.2
 
  - Expose `expected` in the nil matcher so the description can be rendered
