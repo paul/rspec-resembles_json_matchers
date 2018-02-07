@@ -9,16 +9,18 @@ module RSpec::ResemblesJsonMatchers
         route_string.include?(":")
     end
 
+    attr_reader :expected
+
     def initialize(expected_route)
-      @expected_route = expected_route
+      @expected = expected_route
     end
 
     def description
-      "resemble route #{@expected_route.inspect}"
+      "resemble route #{@expected.inspect}"
     end
 
     def matches?(actual)
-      path = ActionDispatch::Journey::Path::Pattern.from_string(@expected_route)
+      path = ActionDispatch::Journey::Path::Pattern.from_string(@expected)
       actual =~ path.to_regexp
     end
   end
