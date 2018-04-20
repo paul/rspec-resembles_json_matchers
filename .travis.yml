@@ -1,12 +1,10 @@
 language: ruby
 rvm:
-  - 2.4.2
-  - 2.5.0
+  - "2.4"
+  - "2.5"
 before_install: gem install bundler
 gemfile:
-  - gemfiles/rails_32.gemfile
   - gemfiles/rails_42.gemfile
-  - gemfiles/rails_42_rspec_33.gemfile
   - gemfiles/rails_5.gemfile
 matrix:
   fast_finish: true
