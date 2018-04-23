@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    rspec-resembles_json_matchers (0.7.0)
+    rspec-resembles_json_matchers (0.7.4)
       activesupport (>= 3.0)
       rspec (>= 2.0, < 4.0.0.a)
       rspec-expectations (>= 2.0, < 4.0.0.a)
