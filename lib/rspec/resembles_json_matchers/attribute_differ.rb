@@ -51,20 +51,11 @@ module RSpec::ResemblesJsonMatchers
         @buffer.puts
       else
         if nested_matcher?(matcher.value_matcher)
-          if matcher.missing_attribute?
-            prefix = prefix + "- "
-            @buffer.print REMOVED_COLOR
-            @buffer.print prefix + "#{matcher.attribute_name.to_json}: "
-            render(matcher.value_matcher, prefix: prefix)
-            @buffer.print(",") unless last
-            @buffer.puts
-          else
-            @buffer.print NORMAL_COLOR
-            @buffer.print prefix + "  " + "#{matcher.attribute_name.to_json}: "
-            render(matcher.value_matcher, prefix: prefix + "  ")
-            @buffer.print(",") unless last
-            @buffer.puts
-          end
+          @buffer.print NORMAL_COLOR
+          @buffer.print prefix + "  " + "#{matcher.attribute_name.to_json}: "
+          render(matcher.value_matcher, prefix: prefix + "  ")
+          @buffer.print(",") unless last
+          @buffer.puts
         else
           @buffer.print REMOVED_COLOR
           @buffer.print prefix
@@ -78,16 +69,32 @@ module RSpec::ResemblesJsonMatchers
           @buffer.print NORMAL_COLOR
           @buffer.print(",") unless last
           @buffer.puts
-          unless matcher.missing_attribute?
-            @buffer.print ADDED_COLOR
-            @buffer.print prefix + "+ #{matcher.attribute_name.to_json}: "
-            render(matcher.actual_value, prefix: prefix + "  ")
-            @buffer.print NORMAL_COLOR
-            @buffer.print(",") unless last
-            @buffer.puts
-          end
+          @buffer.print ADDED_COLOR
+          @buffer.print prefix + "+ #{matcher.attribute_name.to_json}: "
+          render(matcher.actual_value, prefix: prefix + "  ")
+          @buffer.print NORMAL_COLOR
+          @buffer.print(",") unless last
+          @buffer.puts
         end
       end
+    end
+
+    def render_MissingAttributeMatcher(matcher, prefix: "", last: false)
+      prefix = prefix + (prefix.include?("-") ? "  " : "- ")
+      @buffer.print REMOVED_COLOR
+      @buffer.print prefix + "#{matcher.attribute_name.to_json}: "
+      render(matcher.value_matcher, prefix: prefix)
+      @buffer.print(",") unless last
+      @buffer.puts
+    end
+
+    def render_ExtraAttributeMatcher(matcher, prefix: "", last: false)
+      prefix = prefix + "+ "
+      @buffer.print ADDED_COLOR
+      @buffer.print prefix + matcher.attribute_name.to_json + ": "
+      render(matcher.actual_value, prefix: prefix)
+      @buffer.print "," unless last
+      @buffer.puts
     end
 
     def render_ResemblesAnyOfMatcher(matcher, prefix: "", **opts)

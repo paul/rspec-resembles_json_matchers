@@ -27,7 +27,7 @@
 guard :rspec,
       # cmd: "bin/rspec --no-profile --fail-fast",
       cmd: "bin/rspec --no-profile",
-      failed_mode: :keep,
+      failed_mode: :focus,
       run_all: { cmd: "bin/rspec --no-profile --tag ~type:feature" }, # skip feature specs on "all"
       notification: true,
       all_on_start: false,

@@ -1,6 +1,7 @@
 require "active_support/core_ext/hash/keys" # stringify_keys
 require "json"
 
+require "rspec/matchers"
 require "rspec/resembles_json_matchers/attribute_differ"
 
 module RSpec::ResemblesJsonMatchers
@@ -20,9 +21,10 @@ module RSpec::ResemblesJsonMatchers
 
     def matches?(actual_json)
       @actual = actual_json.try(:deep_stringify_keys)
+      # Can't use #all? because it stops on the first false
       all_passed = true
-      expected_matchers.each do |key, attr_matcher|
-        result = attr_matcher.matches?(actual)
+      expected_matchers.each do |key, matcher|
+        result = matcher.matches?(actual)
         all_passed &&= result
       end
       all_passed
@@ -43,8 +45,14 @@ module RSpec::ResemblesJsonMatchers
 
     def expected_matchers
       @expected_matchers ||= {}.tap do |hsh|
-        expected.each do |k,v|
-          hsh[k.to_s] = AttributeMatcher.new(k, matcherize(v))
+        (expected.keys + actual.keys).uniq.each do |key|
+          expected_value = matcherize(expected[key])
+          hsh[key.to_s] =
+            if !expected.key?(key) then ExtraAttributeMatcher.new(key, expected_value)
+            elsif !actual.key?(key) then MissingAttributeMatcher.new(key, expected_value)
+            else
+              AttributeMatcher.new(key, expected_value)
+            end
         end
       end
     end
@@ -57,29 +65,9 @@ module RSpec::ResemblesJsonMatchers
       out << "\n}"
     end
 
-    def color_lines(text)
-      text.split("\n").map do |line|
-        case line.chr[0]
-          when "-" then red line
-          when "+" then green line
-        end
-      end.compact
+    def actual
+      @actual ||= {}
     end
 
-    def color(text, color_code)
-      "\e[#{color_code}m#{text}\e[0m"
-    end
-
-    def red(text)
-      color(text, 31)
-    end
-
-    def green(text)
-      color(text, 32)
-    end
-
-    def normal(text)
-      color(text, 0)
-    end
   end
 end

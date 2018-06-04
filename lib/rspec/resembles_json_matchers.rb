@@ -3,18 +3,18 @@ require "rspec/resembles_json_matchers/string_indent"
 
 module RSpec
   module ResemblesJsonMatchers
-    autoload :AttributeMatcher, "rspec/resembles_json_matchers/attribute_matcher"
-    autoload :JsonMatcher,      "rspec/resembles_json_matchers/json_matcher"
-    autoload :Helpers,          "rspec/resembles_json_matchers/helpers"
+    require "rspec/resembles_json_matchers/helpers"
+    require "rspec/resembles_json_matchers/attribute_matcher"
+    require "rspec/resembles_json_matchers/json_matcher"
 
-    autoload :ResemblesAnyOfMatcher,   "rspec/resembles_json_matchers/resembles_any_of_matcher"
-    autoload :ResemblesRouteMatcher,   "rspec/resembles_json_matchers/resembles_route_matcher"
-    autoload :ResemblesDateMatcher,    "rspec/resembles_json_matchers/resembles_date_matcher"
-    autoload :ResemblesNumericMatcher, "rspec/resembles_json_matchers/resembles_numeric_matcher"
-    autoload :ResemblesStringMatcher,  "rspec/resembles_json_matchers/resembles_string_matcher"
-    autoload :ResemblesBooleanMatcher, "rspec/resembles_json_matchers/resembles_boolean_matcher"
-    autoload :ResemblesNilMatcher,     "rspec/resembles_json_matchers/resembles_nil_matcher"
-    autoload :ResemblesClassMatcher,   "rspec/resembles_json_matchers/resembles_class_matcher"
+    require "rspec/resembles_json_matchers/resembles_any_of_matcher"
+    require "rspec/resembles_json_matchers/resembles_route_matcher"
+    require "rspec/resembles_json_matchers/resembles_date_matcher"
+    require "rspec/resembles_json_matchers/resembles_numeric_matcher"
+    require "rspec/resembles_json_matchers/resembles_string_matcher"
+    require "rspec/resembles_json_matchers/resembles_boolean_matcher"
+    require "rspec/resembles_json_matchers/resembles_nil_matcher"
+    require "rspec/resembles_json_matchers/resembles_class_matcher"
 
     def iso8601_timestamp
       match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/)

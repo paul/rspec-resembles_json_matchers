@@ -1,4 +1,4 @@
-require_relative "../spec_helper"
+require "spec_helper"
 
 RSpec.describe RSpec::ResemblesJsonMatchers::AttributeMatcher do
 
@@ -40,7 +40,7 @@ RSpec.describe RSpec::ResemblesJsonMatchers::AttributeMatcher do
     context "with a key that does not exist" do
       let(:key) { :does_not_exist }
 
-      specify { expect(matcher.matches?(example_hash)).to be_falsy }
+      specify { expect(matcher.matches?(example_hash)).to be_falsey }
     end
   end
 
@@ -99,25 +99,6 @@ RSpec.describe RSpec::ResemblesJsonMatchers::AttributeMatcher do
   describe "#failure_message" do
     subject(:failure_message) { matcher.failure_message }
     before { matcher.matches? example_hash }
-
-    context "when the document is missing the attribute" do
-      let(:key) { :does_not_exist }
-      subject(:failure_message) { matcher.failure_message }
-
-      context "when just a key was provided" do
-        let(:matcher) { described_class.new(key) }
-
-
-        specify { expect(failure_message).to eq "Expected document to have attribute :does_not_exist" }
-      end
-
-      context "when a key and value matcher were provided" do
-        let(:value_matcher) { be_true }
-        let(:matcher) { described_class.new(key, value_matcher) }
-
-        specify { expect(failure_message).to eq "Expected document to have attribute :does_not_exist" }
-      end
-    end
 
     context "when the document has the attribute, but it doesn't match" do
       let(:value_matcher) { be_true }

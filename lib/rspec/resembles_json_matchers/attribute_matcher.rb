@@ -1,13 +1,15 @@
 require "active_support/core_ext/hash/indifferent_access"
+require "active_support/core_ext/object/try"
 
 module RSpec::ResemblesJsonMatchers
 
   class AttributeMatcher
     include RSpec::ResemblesJsonMatchers::Helpers
+    Undefined = Object.new # TODO use Dry::Core::Constants::Undefined
 
     attr_reader :attribute_name, :expected, :document
 
-    def initialize(attribute_name, expected = NullMatcher)
+    def initialize(attribute_name, expected = NullMatcher.new)
       @attribute_name, @expected = attribute_name, expected
     end
 
@@ -18,15 +20,11 @@ module RSpec::ResemblesJsonMatchers
     def matches?(document)
       @document = document.try(:with_indifferent_access)
 
-      @matched = !missing_attribute? && expected.matches?(actual_value)
+      @matched = document.key?(attribute_name) && expected.matches?(actual_value)
     end
 
     def failure_message
-      if missing_attribute?
-        %{Expected document to have attribute #{attribute_name.inspect}}
-      else
-        %{Expected attribute #{attribute_name.inspect} to #{value_matcher.description}, but it was #{actual_value.inspect}}
-      end
+      %{Expected attribute #{attribute_name.inspect} to #{value_matcher.description}, but it was #{actual_value.inspect}}
     end
 
     def matched?
@@ -43,14 +41,6 @@ module RSpec::ResemblesJsonMatchers
 
     def actual_value
       document.fetch(attribute_name, nil)
-    end
-
-    def missing_attribute?
-      !has_attribute?
-    end
-
-    def has_attribute?
-      document && document.key?(attribute_name)
     end
 
     NullMatcher = Class.new do
@@ -70,7 +60,40 @@ module RSpec::ResemblesJsonMatchers
       def ===(_other)
         true
       end
-    end.new
+    end
 
   end
+
+  class MissingAttributeMatcher < AttributeMatcher
+    def matches?(document)
+      @document = document.try(:with_indifferent_access)
+      false
+    end
+
+    def failure_message
+      "Document had is missing attribute #{attribute_name.inspect}"
+    end
+
+    def description
+      "be present"
+    end
+  end
+
+  class ExtraAttributeMatcher < AttributeMatcher
+
+    def matches?(document)
+      @document = document.try(:with_indifferent_access)
+      false
+    end
+
+    def failure_message
+      "Document had unexpected attribute #{attribute_name.inspect}"
+    end
+
+    def description
+      "not be present"
+    end
+
+  end
+
 end

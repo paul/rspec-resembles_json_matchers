@@ -85,6 +85,27 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       end
     end
 
+    context "when the document has an extra field" do
+      let(:document) { super().merge(email: "paul@sadauskas.com") }
+
+      it "should not match the document" do
+        expect(result).to be_falsey
+      end
+
+      it "should have a failure message with a diff containing the mismatch field" do
+        expect(strip_colors(failure_message)).to eq(<<~TXT.strip)
+          Diff:
+          {
+            "id": 1,
+            "name": "Paul",
+            "website": "http://sadauskas.com",
+            "created_at": "2017-01-01T00:00:00Z",
+          + "email": "paul@sadauskas.com"
+          }
+        TXT
+      end
+    end
+
     context "nested documents" do
       let(:document) do
         {
