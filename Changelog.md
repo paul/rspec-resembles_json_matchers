@@ -1,3 +1,7 @@
+# 0.8.0
+
+ - ResemblesJson now fails if there are unexpected keys in the actual hash
+
 # 0.7.3
 
  - Add a few more missing render methods
