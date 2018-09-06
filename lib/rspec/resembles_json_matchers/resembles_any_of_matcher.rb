@@ -16,8 +16,12 @@ module RSpec::ResemblesJsonMatchers
 
     def matches?(actual)
       @actual = Array.wrap(actual)
-      @actual.all? do |a|
-        expected_matchers.any? { |m| attempted_matchers << m; m.matches? a }
+      if actual.empty?
+        expected_matchers.empty?
+      else
+        actual.all? do |a|
+          expected_matchers.any? { |m| attempted_matchers << m; m.matches? a }
+        end
       end
     end
 

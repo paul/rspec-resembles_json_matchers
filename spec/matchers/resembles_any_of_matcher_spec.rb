@@ -4,6 +4,29 @@ RSpec.describe RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher do
 
   subject(:matcher) { RSpec::ResemblesJsonMatchers::ResemblesAnyOfMatcher.new(matcher_candidates) }
 
+  describe "empty array" do
+    context "when expected has items but actual does not" do
+      let(:given) { [ ] }
+      let(:matcher_candidates) { [ 1 ] }
+
+      specify { expect(matcher.matches?(given)).to be_falsey }
+    end
+
+    context "when expected is an empty array and actual is not" do
+      let(:given) { [ 1 ] }
+      let(:matcher_candidates) { [ ] }
+
+      specify { expect(matcher.matches?(given)).to be_falsey }
+    end
+
+    context "when expected and actual are both empty" do
+      let(:given) { [ ] }
+      let(:matcher_candidates) { [ ] }
+
+      specify { expect(matcher.matches?(given)).to be_truthy }
+    end
+  end
+
   context "when every item in the given array matches one of the matchers" do
     let(:given) { [ 1, 2, "foo" ] }
     let(:matcher_candidates) { [ be_kind_of(Integer), "foo" ] }
