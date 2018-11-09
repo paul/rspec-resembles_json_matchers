@@ -16,7 +16,7 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def matches?(actual)
-      actual == @expected
+      actual.is_a?(TrueClass) || actual.is_a?(FalseClass)
     end
 
     def expected_formatted
