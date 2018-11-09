@@ -1,3 +1,10 @@
+# 0.9.0
+
+ - ResemblesBoolean doesn't care about the value of the boolean, only that it
+   is a boolean.
+ - ResemblesAnyOf with non-homogeneous arrays no longer prints errors when the
+   overall array matched successfully.
+
 # 0.8.0
 
  - ResemblesJson now fails if there are unexpected keys in the actual hash
