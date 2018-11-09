@@ -99,14 +99,24 @@ module RSpec::ResemblesJsonMatchers
 
     def render_ResemblesAnyOfMatcher(matcher, prefix: "", **opts)
       @buffer.puts "["
-      if matcher.actual.nil? || matcher.actual.empty?
-        example_matcher = matcher.expected.first
-        render example_matcher, prefix: prefix + "  ", starts_on_newline: true
-        @buffer.puts
+      if matcher.matched?
+        matcher.original_expected.each do |item|
+          @buffer.print JSON.pretty_generate(item).indent(1, NORMAL_COLOR + prefix + "- ")
+          last = (matcher.original_expected.last == item)
+          @buffer.print(",") unless last
+          @buffer.puts
+        end
+      elsif matcher.actual.nil? || matcher.actual.empty?
+        matcher.expected.each do |expected_matcher|
+          render expected_matcher, prefix: prefix + "  ", starts_on_newline: true
+          last = (matcher.expected.last == expected_matcher)
+          @buffer.print(",") unless last
+          @buffer.puts
+        end
       else
         matcher.attempted_matchers.each do |attempted_matcher|
-          last = (matcher.attempted_matchers.last == attempted_matcher)
           render attempted_matcher, prefix: prefix + "  ", starts_on_newline: true
+          last = (matcher.attempted_matchers.last == attempted_matcher)
           @buffer.print(",") unless last
           @buffer.puts
         end

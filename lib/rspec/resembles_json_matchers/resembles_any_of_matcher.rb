@@ -8,17 +8,22 @@ module RSpec::ResemblesJsonMatchers
       array.is_a? Array
     end
 
-    attr_reader :expected, :actual
+    attr_reader :expected, :actual, :original_expected
 
     def initialize(expected)
+      @original_expected = expected
       @expected = expected.map { |e| matcherize(e) }
     end
 
     def matches?(actual)
       @actual = Array.wrap(actual)
-      @actual.all? do |a|
+      @matched = @actual.all? do |a|
         expected_matchers.any? { |m| attempted_matchers << m; m.matches? a }
       end
+    end
+
+    def matched?
+      @matched
     end
 
     def description
