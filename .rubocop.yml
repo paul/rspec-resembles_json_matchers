@@ -4,40 +4,27 @@ Rails:
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRailsVersion: 5.1
   TargetRubyVersion: 2.5
 
   Include:
     - "**/Rakefile"
-    - "**/config.ru"
   Exclude:
     - "vendor/**/*"
     - "spec/fixtures/**/*"
     - "bin/**/*"
     - "script/**/*"
-    - "node_modules/**/*"
 
 inherit_from:
   - http://relaxed.ruby.style/rubocop.yml
-# Rules subject to debate
+
 Metrics/LineLength:
   Max: 120
-
 Metrics/BlockLength:
   ExcludedMethods:
     - describe
     - context
     - it
     - specify
-  Exclude:
-    - "lib/tasks/**/*"
-    - "config/routes.rb"
-Rails/Date:
-  Enabled: false
-Rails/TimeZone:
-  Enabled: false
-Rails/RelativeDateConstant:
-  Enabled: false
 Style/AndOr:
   EnforcedStyle: conditionals
 Layout/CaseIndentation:
@@ -46,14 +33,8 @@ Style/Documentation:
   Enabled: false
 Style/EachWithObject:
   Enabled: false
-Layout/ExtraSpacing:
-  Exclude:
-    - "config/routes.rb"
 Style/FrozenStringLiteralComment:
   Enabled: true
-Style/HashSyntax:
-  Exclude:
-    - "lib/tasks/**/*"
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 Style/NumericLiterals:
