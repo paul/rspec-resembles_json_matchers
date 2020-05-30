@@ -2,6 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/rspec-json_api_matchers.svg)](https://badge.fury.io/rb/rspec-json_api_matchers)[![Build Status](https://travis-ci.org/paul/rspec-json_api_matchers.svg?branch=master)](https://travis-ci.org/paul/rspec-json_api_matchers)
 
+
 This gem provides a set of matchers that make testing JSON documents (actually the hashes parsed from them) simpler and more elegant.
 
 ## `resemble` Matcher
@@ -193,3 +194,7 @@ Or install it yourself as:
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/paul/rspec-json_api_matchers.
 
+## License
+
+
+[![WTFPL](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-badge-4.png)][http://www.wtfpl.net/]
