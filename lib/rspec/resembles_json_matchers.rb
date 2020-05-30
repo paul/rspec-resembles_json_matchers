@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rspec/resembles_json_matchers/version"
 require "rspec/resembles_json_matchers/string_indent"
 
@@ -32,7 +34,7 @@ module RSpec
 
     def self.resembles_matcher_candidates
       # Order matters
-      @candidates ||= [
+      @resembles_matcher_candidates ||= [
         JsonMatcher,
         ResemblesAnyOfMatcher,
         ResemblesRouteMatcher,
@@ -45,9 +47,8 @@ module RSpec
       ].freeze
     end
 
-    def self.resembles_matcher_for(expected, **a)
+    def self.resembles_matcher_for(expected, **_a)
       resembles_matcher_candidates.detect { |candidate| candidate.can_match?(expected) } || RSpec::Matchers::BuiltIn::Eq
     end
-
   end
 end

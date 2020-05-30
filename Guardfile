@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -26,12 +28,12 @@
 
 guard :rspec,
       # cmd: "bin/rspec --no-profile --fail-fast",
-      cmd: "bin/rspec --no-profile",
-      failed_mode: :focus,
-      run_all: { cmd: "bin/rspec --no-profile --tag ~type:feature" }, # skip feature specs on "all"
+      cmd:          "bin/rspec --no-profile",
+      failed_mode:  :focus,
+      run_all:      { cmd: "bin/rspec --no-profile --tag ~type:feature" }, # skip feature specs on "all"
       notification: true,
       all_on_start: false,
-      all_on_pass: false do
+      all_on_pass:  false do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -50,5 +52,4 @@ guard :rspec,
   watch(%r{^lib/rspec/resembles_json_matchers/(.+_matcher)\.rb$}) do |m|
     "spec/matchers/#{m[1]}_spec.rb"
   end
-
 end

@@ -1,5 +1,6 @@
-module RSpec::ResemblesJsonMatchers
+# frozen_string_literal: true
 
+module RSpec::ResemblesJsonMatchers
   module Matcherizer
     def matcherize(expected)
       if matcher? expected
@@ -20,6 +21,4 @@ module RSpec::ResemblesJsonMatchers
       obj.respond_to?(:matches?) && obj.respond_to?(:description)
     end
   end
-
 end
-

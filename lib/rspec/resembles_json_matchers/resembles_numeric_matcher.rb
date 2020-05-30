@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module RSpec::ResemblesJsonMatchers
   class ResemblesNumericMatcher
@@ -25,7 +26,7 @@ module RSpec::ResemblesJsonMatchers
       @expected
     end
 
-    def to_json
+    def to_json(*_args)
       @expected
     end
 

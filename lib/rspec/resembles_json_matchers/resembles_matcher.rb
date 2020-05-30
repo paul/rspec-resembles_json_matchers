@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/array/wrap"
 
 module RSpec::ResemblesJsonMatchers
-
   def resembles(expected)
     ResemblesMatcher.new(expected)
   end
@@ -18,11 +19,9 @@ module RSpec::ResemblesJsonMatchers
                           candidates.detect { |candidate| candidate.can_match?(@expected) }
                         end
 
-      if candidate_class
-        @candidate = candidate_class.new(expected)
-      else
-        fail "Could not find an acceptable resembles matcher for #{@expected.inspect}"
-      end
+      fail "Could not find an acceptable resembles matcher for #{@expected.inspect}" unless candidate_class
+
+      @candidate = candidate_class.new(expected)
     end
 
     def description
@@ -31,29 +30,22 @@ module RSpec::ResemblesJsonMatchers
 
     def matches?(actual)
       @actual = actual
-      if @candidate
-        @candidate.matches?(actual)
-      end
+      @candidate&.matches?(actual)
     end
 
     def failure_message(negated: false)
-      "expected #{@actual.inspect} to #{negated ? "not " : ""}#{description}"
+      "expected #{@actual.inspect} to #{negated ? 'not ' : ''}#{description}"
     end
 
     def negative_failure_message
       failure_message(negated: true)
     end
 
-    def candidates
-    end
+    def candidates; end
   end
 
   class ResemblesAllOfMatcher
-
   end
-
-
 
   RSpec.configure { |c| c.include self }
 end
-

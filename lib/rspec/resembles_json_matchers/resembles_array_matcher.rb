@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module RSpec::ResemblesJsonMatchers
   class ResemblesArrayMatcher
@@ -27,9 +28,6 @@ module RSpec::ResemblesJsonMatchers
       @expected.map { |e| matcherize(e) }
     end
 
-    def failure_message
-    end
+    def failure_message; end
   end
-
-
 end

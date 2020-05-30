@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/hash/indifferent_access"
 require "active_support/core_ext/object/try"
 
 module RSpec::ResemblesJsonMatchers
-
   class AttributeMatcher
     include RSpec::ResemblesJsonMatchers::Helpers
     Undefined = Object.new # TODO use Dry::Core::Constants::Undefined
@@ -61,7 +62,6 @@ module RSpec::ResemblesJsonMatchers
         true
       end
     end
-
   end
 
   class MissingAttributeMatcher < AttributeMatcher
@@ -80,7 +80,6 @@ module RSpec::ResemblesJsonMatchers
   end
 
   class ExtraAttributeMatcher < AttributeMatcher
-
     def matches?(document)
       @document = document.try(:with_indifferent_access)
       false
@@ -93,7 +92,5 @@ module RSpec::ResemblesJsonMatchers
     def description
       "not be present"
     end
-
   end
-
 end

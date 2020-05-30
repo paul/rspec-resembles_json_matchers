@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/array/wrap"
 
 module RSpec::ResemblesJsonMatchers
@@ -34,9 +36,7 @@ module RSpec::ResemblesJsonMatchers
       end
     end
 
-    def failure_message
-
-    end
+    def failure_message; end
 
     def expected_matchers
       @expected
@@ -47,16 +47,12 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def expected_formatted
-      "".tap do |out|
-        out << expected_matchers.map do |v|
-          case v
-          when RSpec::Matchers::BuiltIn::Eq
-            "should #{v.description}".indent(2)
-          else
-            "should #{v.description}".indent(2)
-          end
-        end.join("\n")
-      end << "\n"
+      out = +""
+      out << expected_matchers.map do |v|
+        "should #{v.description}".indent(2)
+      end.join("\n")
+      out << "\n"
+      out
     end
   end
 end

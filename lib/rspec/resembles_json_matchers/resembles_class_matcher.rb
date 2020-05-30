@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module RSpec::ResemblesJsonMatchers
   class ResemblesClassMatcher
@@ -17,7 +18,7 @@ module RSpec::ResemblesJsonMatchers
 
     def matches?(actual)
       @actual = actual
-      actual.kind_of? @expected
+      actual.is_a? @expected
     end
 
     def expected_formatted

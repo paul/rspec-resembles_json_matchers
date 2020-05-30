@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "spec_helper"
 
 RSpec.describe RSpec::ResemblesJsonMatchers do
@@ -15,6 +17,4 @@ RSpec.describe RSpec::ResemblesJsonMatchers do
       actual.respond_to? :matches?
     end
   end
-
 end
-

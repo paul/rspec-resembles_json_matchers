@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RSpec::ResemblesJsonMatchers
   class ResemblesHashMatcher
     include Helpers
@@ -30,11 +32,11 @@ module RSpec::ResemblesJsonMatchers
         end
       end
 
-      actual.keys.each { |k| unmatched_matchers.delete(k) }
+      actual.each_key { |k| unmatched_matchers.delete(k) }
 
-      !failed_matches.any? and
-        !unmatched_keys.any? and
-        !unmatched_matchers.any?
+      failed_matches.none? and
+        unmatched_keys.none? and
+        unmatched_matchers.none?
     end
 
     def description
@@ -59,9 +61,7 @@ module RSpec::ResemblesJsonMatchers
       end
     end
 
-    def failed_matches
-      @failed_matches
-    end
+    attr_reader :failed_matches
 
     def unmatched_keys
       @actual.keys - @matched_keys
@@ -73,15 +73,16 @@ module RSpec::ResemblesJsonMatchers
 
     def expected_formatted
       out = "{\n"
-      out << expected_matchers.map do |k,v|
+      out << expected_matchers.map do |k, v|
         %{  "%s": %s} % [k, v.expected_formatted]
       end.join(",\n")
       out << "\n}\n"
     end
 
     def pretty_failed_matches
-      failed_matches.map do |k,matcher|
+      failed_matches.map do |k, matcher|
         next unless @actual.key?(k) # Covered by the unmatched matchers messages
+
         matcher_failure_message =
           matcher.failure_message
                  .gsub("(compared using ==)", "") # From the equality matcher, ugly in this context
@@ -99,10 +100,9 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def pretty_unmatched_matchers
-      unmatched_matchers.map do |key, matcher|
+      unmatched_matchers.map do |key, _matcher|
         "attribute #{key.to_s.inspect}:\n  has a matcher defined, but that attribute was not provided"
       end.join("\n") + "\n"
     end
-
   end
 end

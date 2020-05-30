@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 require "time"
@@ -5,23 +7,24 @@ require "active_support/core_ext/hash" # Hash#except
 
 RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
   subject(:matcher) { described_class.new(expected) }
+
   let(:result) { matcher.matches?(document) }
   let(:failure_message) { result; strip_colors(matcher.failure_message) }
 
   let(:document) do
     {
-      id: 1,
-      name: "Paul",
-      website: "http://sadauskas.com",
+      id:         1,
+      name:       "Paul",
+      website:    "http://sadauskas.com",
       created_at: "2017-01-01T00:00:00Z"
     }
   end
 
   let(:expected) do
     {
-      id: 1,
-      name: "Paul",
-      website: "http://sadauskas.com",
+      id:         1,
+      name:       "Paul",
+      website:    "http://sadauskas.com",
       created_at: "2017-01-01T00:00:00Z"
     }
   end
@@ -109,7 +112,7 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
     context "nested documents" do
       let(:document) do
         {
-          title: "hello",
+          title:  "hello",
           author: {
             name: 42
           }
@@ -118,7 +121,7 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
 
       let(:expected) do
         {
-          title: "hello",
+          title:  "hello",
           author: {
             name: "Paul"
           }
@@ -164,7 +167,6 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
             }
           TXT
         end
-
       end
     end
 
@@ -172,14 +174,14 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       let(:document) do
         {
           "@context": "/_contexts/Collection.jsonld",
-          "@id": "/users",
-          "@type": "UserCollection",
-          "member": [
+          "@id":      "/users",
+          "@type":    "UserCollection",
+          "member":   [
             {
-              "@context": "/_contexts/Collection.jsonld",
-              "@id": "/users",
-              "@type": "UserCollection",
-              "name": 42,
+              "@context":   "/_contexts/Collection.jsonld",
+              "@id":        "/users",
+              "@type":      "UserCollection",
+              "name":       42,
               "created_at": "2017-01-01T00:00:00Z"
             }
           ]
@@ -189,14 +191,14 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
       let(:expected) do
         {
           "@context": "/_contexts/Collection.jsonld",
-          "@id": "/users",
-          "@type": "UserCollection",
-          "member": [
+          "@id":      "/users",
+          "@type":    "UserCollection",
+          "member":   [
             {
-              "@context": "/_contexts/Collection.jsonld",
-              "@id": "/users",
-              "@type": "UserCollection",
-              "name": "Paul",
+              "@context":   "/_contexts/Collection.jsonld",
+              "@id":        "/users",
+              "@type":      "UserCollection",
+              "name":       "Paul",
               "created_at": "2017-01-01T00:00:00Z"
             }
           ]
@@ -233,9 +235,9 @@ RSpec.describe RSpec::ResemblesJsonMatchers::JsonMatcher do
   context "when expected has matchers in it" do
     let(:expected) do
       {
-        id: Integer,
-        name: match(/Paul/),
-        website: eq("http://example.com"),
+        id:         Integer,
+        name:       match(/Paul/),
+        website:    eq("http://example.com"),
         created_at: Time.parse("2018-01-01T00:00:00Z")
       }
     end

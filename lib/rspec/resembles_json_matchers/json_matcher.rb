@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/core_ext/hash/keys" # stringify_keys
 require "json"
 
@@ -13,7 +15,7 @@ module RSpec::ResemblesJsonMatchers
       hash.is_a? Hash
     end
 
-    attr_reader :expected, :actual
+    attr_reader :expected
 
     def initialize(expected_json)
       @expected = expected_json.try(:deep_stringify_keys)
@@ -23,7 +25,7 @@ module RSpec::ResemblesJsonMatchers
       @actual = actual_json.try(:deep_stringify_keys)
       # Can't use #all? because it stops on the first false
       all_passed = true
-      expected_matchers.each do |key, matcher|
+      expected_matchers.each do |_key, matcher|
         result = matcher.matches?(actual)
         all_passed &&= result
       end
@@ -39,7 +41,7 @@ module RSpec::ResemblesJsonMatchers
       AttributeDiffer.new(self).to_s
     end
 
-    def to_json
+    def to_json(*_args)
       failure_message
     end
 
@@ -58,8 +60,8 @@ module RSpec::ResemblesJsonMatchers
     end
 
     def expected_formatted
-      out = "{\n"
-      out << expected_matchers.map do |k,v|
+      out = +"{\n"
+      out << expected_matchers.map do |k, v|
         %{"#{k}": #{RSpec::Support::ObjectFormatter.format(v.expected_value)}}.indent(2)
       end.join(",\n")
       out << "\n}"
@@ -68,6 +70,5 @@ module RSpec::ResemblesJsonMatchers
     def actual
       @actual ||= {}
     end
-
   end
 end
